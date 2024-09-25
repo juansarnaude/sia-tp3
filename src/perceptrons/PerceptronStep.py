@@ -14,7 +14,7 @@ class PerceptronStep(Perceptron):
 
     def error(self, computed, expected):
         error_acum = 0
-        for index in range(len(computed)):
+        for index in range(len(computed)-1):
             error_acum += abs(expected[index] - computed[index])
         return error_acum
 

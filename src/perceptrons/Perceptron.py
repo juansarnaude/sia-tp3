@@ -15,8 +15,8 @@ class Perceptron(ABC):
     def run(self):
         current_period = 1
         current_error = 100
-        bias = random.uniform(0, 1)
-
+        #bias = random.uniform(0, 1)
+        bias = 1
         w_amount = len(self.dataset.iloc[0]) - 1
         neuron = Neuron(w_amount)
 
@@ -24,18 +24,18 @@ class Perceptron(ABC):
             expected_values = []
             computed_values = []
 
-            for data in self.dataset.values.tolist():
+            for data in self.dataset.values.tolist(): # TODO optimze this so it doesnt have to load data this way always
                 expected_value = data.pop()
 
                 neuron_weighted_sum = neuron.get_weighted_sum(data, bias)
                 theta = self.theta(neuron_weighted_sum)
                 computed_value = self.compute_activation(theta)
 
-                new_ws = np.zeros(w_amount)
-                for index, w in enumerate(neuron.get_w()):
-                    new_ws[index] = w + self.delta_w(computed_value, expected_value, data[index])
-
-                neuron.modify_w(new_ws)
+                print(neuron_weighted_sum)
+                print(theta)
+                print(expected_value)
+                neuron.update_w( self.delta_w(computed_value, expected_value, np.array(data) ))
+                print(neuron.get_w())
 
                 bias += self.delta_b(computed_value, expected_value)
 
@@ -44,8 +44,8 @@ class Perceptron(ABC):
 
             print("Current Period: " + str(current_period))
             # (neuron.get_w())
-            #print(expected_values)
-            #print(computed_values)
+            # print(expected_values)
+            # print(computed_values)
 
             if self.error(np.array(computed_values), np.array(expected_values)) <= self.epsilon:
                 print("Last Period WON")
