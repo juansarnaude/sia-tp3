@@ -1,13 +1,12 @@
 from src.perceptrons.Perceptron import Perceptron
 
-class PerceptronStep(Perceptron):
-
+class PerceptronLinear(Perceptron):
     def __init__(self, learning_rate, periods, epsilon, dataset):
         super().__init__(learning_rate, periods, epsilon, dataset)
 
 
     def delta_w(self, neuron_computed, expected_value, data):
-        return self.learning_rate * (expected_value - neuron_computed) * data
+        return self.learning_rate * (expected_value - neuron_computed) * 1 * data # TODO : TOTO (by Africa) IS REALLY 1 ??
 
     def delta_b(self, neuron_computed, expected_value):
         return self.learning_rate * (expected_value - neuron_computed)
@@ -15,16 +14,11 @@ class PerceptronStep(Perceptron):
     def error(self, computed, expected):
         error_acum = 0
         for index in range(len(computed)):
-            error_acum += abs(expected[index] - computed[index])
-        return error_acum
+            error_acum += (expected[index] - computed[index])**2
+        return 1/2 * error_acum                                                     # TODO check if its divided by 2 or by the len(computed[0])
 
     def theta(self,weighted_sum):
-        if weighted_sum >= 0:
-            return 1
-        return -1
+        return weighted_sum
 
     def compute_activation(self, theta_value):
-        if theta_value > 0:
-            return 1
-        return -1
-
+        return theta_value

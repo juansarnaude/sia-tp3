@@ -1,7 +1,6 @@
 import numpy as np
 
 class Neuron:
-
     def __init__(self, w_amount):
         self.w = np.zeros(w_amount)
 

@@ -1,7 +1,0 @@
-{
-  "input_file": "./input/perceptron_step/and.csv",
-  "output_file": "./output/perceptron_step/output.csv",
-  "learning_rate": 0.1,
-  "periods": 100,
-  "epsilon": 0
-}

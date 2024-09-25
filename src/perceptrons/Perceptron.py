@@ -18,7 +18,6 @@ class Perceptron(ABC):
         bias = random.uniform(0, 1)
 
         w_amount = len(self.dataset.iloc[0]) - 1
-        print(w_amount)
         neuron = Neuron(w_amount)
 
         while current_period < self.periods and current_error > self.epsilon:
@@ -44,8 +43,9 @@ class Perceptron(ABC):
                 computed_values.append(computed_value)
 
             print("Current Period: " + str(current_period))
-            print(expected_values)
-            print(computed_values)
+            # (neuron.get_w())
+            #print(expected_values)
+            #print(computed_values)
 
             if self.error(np.array(computed_values), np.array(expected_values)) <= self.epsilon:
                 print("Last Period WON")
