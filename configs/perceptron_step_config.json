@@ -1,7 +1,6 @@
 {
-  "input_file": "./input/perceptron_step/or.csv",
+  "input_file": "./input/perceptron_step/and.csv",
   "output_file": "./output/perceptron_step/output.csv",
-  "function": "OR",
   "learning_rate": 0.1,
   "periods": 100,
   "epsilon": 0
