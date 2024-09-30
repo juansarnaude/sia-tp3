@@ -6,10 +6,10 @@ class PerceptronStep(Perceptron):
         super().__init__(learning_rate, periods, epsilon, dataset)
 
 
-    def delta_w(self, neuron_computed, expected_value, data):
+    def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
         return self.learning_rate * (expected_value - neuron_computed) * data
 
-    def delta_b(self, neuron_computed, expected_value):
+    def delta_b(self, neuron_computed, expected_value, neuron_weighted_sum):
         return self.learning_rate * (expected_value - neuron_computed)
 
     def error(self, computed, expected):

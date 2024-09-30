@@ -7,10 +7,10 @@ class PerceptronLinear(Perceptron):
         super().__init__(learning_rate, periods, epsilon, dataset)
 
 
-    def delta_w(self, neuron_computed, expected_value, data):
+    def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
         return self.learning_rate * (expected_value - neuron_computed) * 1 * data # TODO : TOTO (by Africa) IS REALLY 1 ??
 
-    def delta_b(self, neuron_computed, expected_value):
+    def delta_b(self, neuron_computed, expected_value, neuron_weighted_sum):
         return self.learning_rate * (expected_value - neuron_computed)
 
     def error(self, computed, expected):
