@@ -1,3 +1,14 @@
+# Ignore Python bytecode files
 *.pyc
-src/models/__pycache__/*
-**/__pycache__/
+*.pyo
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore other common Python-related temporary files
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/

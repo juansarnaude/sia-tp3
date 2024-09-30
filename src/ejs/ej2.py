@@ -8,5 +8,5 @@ if __name__ == "__main__":
 
     df = pd.read_csv(config["input_file"])
 
-    perceptron = PerceptronLinear(config["learning_rate"], config["periods"], config["epsilon"], df)
-    perceptron.run()
+    perceptron = PerceptronLinear(len(df.iloc[0]) - 1, config["learning_rate"], )
+    perceptron.run(config["periods"], config["epsilon"], df)

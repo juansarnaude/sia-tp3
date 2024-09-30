@@ -6,40 +6,42 @@ from src.models.Neuron import Neuron
 
 class Perceptron(ABC):
 
-    def __init__(self, learning_rate, periods, epsilon, dataset):
+    def __init__(self, w_amount, learning_rate):
+        self.bias = random.uniform(-0.1, 0.1)
+        self.w_amount = w_amount
+        self.neuron = Neuron(self.w_amount)
         self.learning_rate = learning_rate
-        self.periods = periods
-        self.epsilon = epsilon
-        self.dataset = dataset
 
-    def run(self):
+
+
+    def run(self, periods, epsilon, dataset):
+        periods = periods
+        epsilon = epsilon
+        dataset = dataset
+
         current_period = 1
         current_error = 100
-        bias = random.uniform(-0.1, 0.1)
-        #bias = 1
-        w_amount = len(self.dataset.iloc[0]) - 1
-        neuron = Neuron(w_amount)
 
-        while current_period < self.periods and current_error > self.epsilon:
+        while current_period < periods and current_error > epsilon:
             expected_values = []
             computed_values = []
-            data_list = self.dataset.values.tolist()
+            data_list = dataset.values.tolist()
 
             for data in data_list: # TODO optimze this so it doesnt have to load data this way always
                 expected_value = data.pop()
 
-                neuron_weighted_sum = neuron.get_weighted_sum(data, bias)
+                neuron_weighted_sum = self.neuron.get_weighted_sum(data, self.bias)
                 theta = self.theta(neuron_weighted_sum)
                 computed_value = self.compute_activation(theta)
 
                 # print(neuron_weighted_sum)
                 # print(theta)
                 # print(expected_value)
-                neuron.update_w( self.delta_w(computed_value, expected_value, np.array(data), neuron_weighted_sum))
+                self.neuron.update_w( self.delta_w(computed_value, expected_value, np.array(data), neuron_weighted_sum))
                 # print(neuron.get_w())
                 # print(bias)
 
-                bias += self.delta_b(computed_value, expected_value, neuron_weighted_sum)
+                self.bias += self.delta_b(computed_value, expected_value, neuron_weighted_sum)
 
                 expected_values.append(expected_value)
                 computed_values.append(computed_value)
@@ -49,14 +51,19 @@ class Perceptron(ABC):
             print(expected_values)
             print(computed_values)
 
-            if self.error(np.array(computed_values), np.array(expected_values)) <= self.epsilon:
+            if self.error(np.array(computed_values), np.array(expected_values)) <= epsilon:
                 print("Last Period WON")
                 return
 
             current_period += 1
 
 
-    # TODO maybe some of this methods is equal in all perceptrons, need to double check
+    def value_to_feed_forward(self, neuron_input):
+        neuron_weighted_sum = self.neuron.get_weighted_sum(neuron_input, self.bias)
+        theta = self.theta(neuron_weighted_sum)
+        return self.compute_activation(theta)
+
+
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
         pass
 

@@ -2,8 +2,8 @@ from src.perceptrons.Perceptron import Perceptron
 
 class PerceptronStep(Perceptron):
 
-    def __init__(self, learning_rate, periods, epsilon, dataset):
-        super().__init__(learning_rate, periods, epsilon, dataset)
+    def __init__(self, w_amount, learning_rate):
+        super().__init__(w_amount, learning_rate)
 
 
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
