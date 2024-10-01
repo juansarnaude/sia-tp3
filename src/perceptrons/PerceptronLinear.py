@@ -8,10 +8,10 @@ class PerceptronLinear(Perceptron):
 
 
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
-        return self.learning_rate * (expected_value - neuron_computed) * 1 * data # TODO : TOTO (by Africa) IS REALLY 1 ??
+        return self.learning_rate * (expected_value - neuron_computed) * self.theta_diff(neuron_weighted_sum) * data # TODO : TOTO (by Africa) IS REALLY 1 ??
 
     def delta_b(self, neuron_computed, expected_value, neuron_weighted_sum):
-        return self.learning_rate * (expected_value - neuron_computed)
+        return self.learning_rate * (expected_value - neuron_computed) * self.theta_diff(neuron_weighted_sum)
 
     def error(self, computed, expected):
         error_acum = 0
@@ -25,3 +25,6 @@ class PerceptronLinear(Perceptron):
 
     def compute_activation(self, theta_value):
         return theta_value
+
+    def theta_diff(self, h):
+        return 1

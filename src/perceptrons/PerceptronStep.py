@@ -28,3 +28,8 @@ class PerceptronStep(Perceptron):
             return 1
         return -1
 
+    def theta_diff(self, h):
+        # This is wrong
+        print("this needs to be fixed. Theta diff in perceptronstep.py")
+        return 1
+

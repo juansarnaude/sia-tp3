@@ -8,10 +8,10 @@ class PerceptronNonLinear(Perceptron):
         self.beta = beta
 
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
-        return self.learning_rate * (expected_value - neuron_computed) * self.derivative_of_theta(neuron_weighted_sum) * data # TODO : TOTO (by Africa) IS REALLY 1 ??
+        return self.learning_rate * (expected_value - neuron_computed) * self.theta_diff(neuron_weighted_sum) * data # TODO : TOTO (by Africa) IS REALLY 1 ??
 
     def delta_b(self, neuron_computed, expected_value, neuron_weighted_sum):
-        return self.learning_rate * (expected_value - neuron_computed) * self.derivative_of_theta(neuron_weighted_sum)
+        return self.learning_rate * (expected_value - neuron_computed) * self.theta_diff(neuron_weighted_sum)
 
     def error(self, computed, expected):
         error_acum = 0
@@ -27,6 +27,6 @@ class PerceptronNonLinear(Perceptron):
         # return np.tanh(self.beta*h)
         return 1/(1+np.exp(-2*self.beta*h))
     
-    def derivative_of_theta(self, h):
+    def theta_diff(self, h):
         # return self.beta*(1-(self.compute_activation(h)**2))
         return 2*self.beta*self.compute_activation(h)*(1-self.compute_activation(h))
