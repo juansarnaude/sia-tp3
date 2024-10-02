@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.perceptrons.PerceptronLinear import PerceptronLinear
 
 class Layer:
@@ -29,4 +31,10 @@ class Layer:
     def get_w_list(self):
         w_list = []
         for perceptron in self.perceptron_list:
-            perceptron.neuron.get_w()
+            w_list.append(perceptron.neuron.get_w())
+        return np.array(w_list)
+
+    def update_w(self, delta_w_layer):
+        index = 0 # Capaz hay que iterar al revez
+        for delta_perceptron in delta_w_layer:
+            self.perceptron_list[index].neuron.update_w(delta_perceptron)
