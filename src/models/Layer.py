@@ -1,6 +1,8 @@
 import numpy as np
 
 from src.perceptrons.PerceptronLinear import PerceptronLinear
+from src.perceptrons.PerceptronStep import PerceptronStep
+
 
 class Layer:
     def __init__(self, perceptron_amount, layer_input_size, learning_rate):
