@@ -3,7 +3,7 @@ import numpy as np
 from src.perceptrons.Perceptron import Perceptron
 
 class PerceptronNonLinear(Perceptron):
-    def __init__(self, w_amount, learning_rate, beta):
+    def __init__(self, w_amount, learning_rate, beta=8):
         super().__init__(w_amount, learning_rate)
         self.beta = beta
 

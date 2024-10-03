@@ -23,6 +23,7 @@ class MultiLayerPerceptron:
     def run(self, dataset, periods, epsilon):
         for i in range(periods):
             data_list = dataset.values.tolist()
+            delta_w_cum_list = None
 
             for data in data_list:
                 expected_value = data.pop()
@@ -31,7 +32,15 @@ class MultiLayerPerceptron:
                 error = self.error(output[-1][0], expected_value )
                 print(f"Output: {output[-1][0]} , Expected: {expected_value}, Error: {error}")
 
-                self.backwards_propagation(output, expected_value)
+                delta_w = self.backwards_propagation(output, expected_value)
+
+                if delta_w_cum_list is None:
+                    delta_w_cum_list = [np.zeros_like(dw) for dw in delta_w]
+                else:
+                    delta_w_cum_list = [arr1 + arr2 for arr1, arr2 in zip(delta_w_cum_list, delta_w)]
+
+            print("--------------")
+            self.update_weights(delta_w_cum_list)
 
 
     # Will return the final output of the multilayered perceptron
@@ -59,14 +68,15 @@ class MultiLayerPerceptron:
             delta_w_list.append(self.learning_rate * np.outer(delta, outputs[index-1]))
             index = index - 1
 
+        return delta_w_list
         #print(delta_w_list)
 
-        index = len(self.layers)-1
+
+    def update_weights(self, delta_w_list):
+        index = len(self.layers) - 1
         for delta_w_layer in delta_w_list:
             self.layers[index].update_w(delta_w_layer)
             index -= 1
-
-
 
     def error(self, expected_value, computed_value):
         return (expected_value - computed_value)**2
