@@ -1,47 +1,20 @@
-
+from src.models.Neuron import Neuron
 import numpy as np
-
-from src.perceptrons.PerceptronLinear import PerceptronLinear
-from src.perceptrons.PerceptronNonLinear import PerceptronNonLinear
-from src.perceptrons.PerceptronStep import PerceptronStep
-
+from src.perceptrons.MultiLayerPerceptron import sigmoid, tanh
 
 class Layer:
-    def __init__(self, perceptron_amount, layer_input_size, learning_rate):
-        self.perceptron_list = []
-        self.last_computed_output = []   # Saves the value returned on last computation
-        self.last_theta_diff = []
+    def __init__(self, n_neurons, input_size):
+        self.neurons = [Neuron(input_size) for _ in range(n_neurons)]
+        self.last_outputs = np.zeros(n_neurons)
 
-        for i in range(perceptron_amount):
-            # We initialize all the unused params in 0.
-            self.perceptron_list.append(PerceptronLinear(layer_input_size, learning_rate))
+    def forward(self, inputs, bias=0):
+        self.last_outputs = np.array([neuron.get_weighted_sum(inputs, bias) for neuron in self.neurons])
+        # Apply tanh activation function to the weighted sums
+        return tanh(self.last_outputs)
 
-    def feed_forward(self, layer_input):
-        layer_output = []
+    def get_weights(self):
+        return [neuron.get_w() for neuron in self.neurons]
 
-        for perceptron in self.perceptron_list:
-            layer_output.append(perceptron.value_to_feed_forward(layer_input))
-
-        self.last_computed_output = layer_output
-        return layer_output
-
-    def get_theta_diff(self):
-        theta_diff_list = []
-        for perceptron in self.perceptron_list:
-            theta_diff_list.append(perceptron.theta_diff(perceptron.neuron.last_weighted_sum))
-        self.last_theta_diff = theta_diff_list
-        return theta_diff_list
-
-    def get_w_list(self):
-        w_list = []
-        for perceptron in self.perceptron_list:
-            w_list.append(perceptron.neuron.get_w())
-        return np.array(w_list)
-
-    def update_w(self, delta_w_layer):
-        index = len(self.perceptron_list)-1 # Capaz hay que iterar al revez
-        for delta_perceptron in delta_w_layer:
-            self.perceptron_list[index].neuron.update_w(delta_perceptron)
-            print(delta_perceptron)
-            index-=1
-        print("------------------------------")
+    def update_weights(self, dW):
+        for i, neuron in enumerate(self.neurons):
+            neuron.update_w(dW[i])

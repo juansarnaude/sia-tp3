@@ -12,8 +12,6 @@ class Perceptron(ABC):
         self.neuron = Neuron(self.w_amount)
         self.learning_rate = learning_rate
 
-
-
     def run(self, periods, epsilon, dataset):
         periods = periods
         epsilon = epsilon
@@ -34,12 +32,7 @@ class Perceptron(ABC):
                 theta = self.theta(neuron_weighted_sum)
                 computed_value = self.compute_activation(theta)
 
-                # print(neuron_weighted_sum)
-                # print(theta)
-                # print(expected_value)
                 self.neuron.update_w( self.delta_w(computed_value, expected_value, np.array(data), neuron_weighted_sum))
-                # print(neuron.get_w())
-                # print(bias)
 
                 self.bias += self.delta_b(computed_value, expected_value, neuron_weighted_sum)
 
@@ -63,7 +56,6 @@ class Perceptron(ABC):
         theta = self.theta(neuron_weighted_sum)
         return self.compute_activation(theta)
 
-
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
         pass
 
@@ -77,4 +69,7 @@ class Perceptron(ABC):
         pass
 
     def compute_activation(self, theta_value):
+        pass
+
+    def theta_diff(self, h):
         pass
