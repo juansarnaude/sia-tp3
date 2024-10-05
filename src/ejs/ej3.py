@@ -1,30 +1,45 @@
 import json
 import pandas as pd
 import numpy as np
-
+from src.utils.functions import sigmoid, tanh
 from src.perceptrons.MultiLayerPerceptron import MultiLayerPerceptron
 
 if __name__ == "__main__":
-    # with open("./configs/ej3.json") as file:
-    #     config = json.load(file)
+    with open("./configs/ej3.json") as file:
+        config = json.load(file)
 
-    # df = pd.read_csv(config["input_file"])
+    df = pd.read_csv(config["input_file"])
+    learning_rate=config["learning_rate"]
 
-    # multi_layer_perceptron = MultiLayerPerceptron( config["neurons_per_layer"], config["learning_rate"], len(df.iloc[0]) - 1)
-    # multi_layer_perceptron.run(df, config["periods"], config["epsilon"])
-    # Initialize MLP with 3 layers: input size 3, hidden layer with 4 neurons, output layer with 1 neuron
+    # layers per output
+    layer_sizes=config["layer_sizes"]
+    
+    # activation_function
+    activation_function_str = config["activation_function"]
+    if activation_function_str == "tanh":
+        activation_funciton = tanh
+    elif activation_function_str == "sigmoid":
+        activation_funciton = sigmoid
+    else:
+        raise ValueError("invalid activation function argument")
+    
+    epochs = config["epochs"]
+    epsilon = config["epsilon"]
 
-    ###############################
+    # list of inputs
+    inputs = np.array(df[['x1', 'x2']].values.tolist())
 
-    mlp = MultiLayerPerceptron([2, 4, 1])
+    # list of expected values
+    expected_values = np.array(df[['y']].values.tolist())
 
-    # XOR problem dataset
-    X_train = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y_train = np.array([[0], [1], [1], [0]])
+    mlp = MultiLayerPerceptron(
+        layer_sizes=layer_sizes,
+        activation_function=activation_funciton,
+        learning_rate=learning_rate
+    )
 
-    # Train the network on the XOR problem
-    mlp.train(X_train, y_train, learning_rate=0.1, epochs=10000)
+    mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)
 
-    # Test the trained MLP on XOR inputs
-    for X in X_train:
-        print(f"Input: {X}, Predicted Output: {mlp.predict(X)}")
+    for input in inputs:
+        prediction = mlp.predict(input)
+        print(f"Entrada: {input}, Predicción: {prediction[0]:.4f}")

@@ -1,20 +1,14 @@
 from src.models.Neuron import Neuron
 import numpy as np
-from src.perceptrons.MultiLayerPerceptron import sigmoid, tanh
 
 class Layer:
-    def __init__(self, n_neurons, input_size):
-        self.neurons = [Neuron(input_size) for _ in range(n_neurons)]
-        self.last_outputs = np.zeros(n_neurons)
+    def __init__(self, input_size, output_size, activation_function):
+        self.neurons = [Neuron(input_size) for _ in range(output_size)]
+        self.activation_function = activation_function
 
-    def forward(self, inputs, bias=0):
-        self.last_outputs = np.array([neuron.get_weighted_sum(inputs, bias) for neuron in self.neurons])
-        # Apply tanh activation function to the weighted sums
-        return tanh(self.last_outputs)
+    def forward(self, inputs):
+        outputs = np.array([neuron.activate(inputs) for neuron in self.neurons])
+        return self.activation_function(outputs)
 
     def get_weights(self):
-        return [neuron.get_w() for neuron in self.neurons]
-
-    def update_weights(self, dW):
-        for i, neuron in enumerate(self.neurons):
-            neuron.update_w(dW[i])
+        return np.array([neuron.weights for neuron in self.neurons])

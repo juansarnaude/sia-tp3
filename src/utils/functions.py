@@ -1,16 +1,15 @@
 import numpy as np
 
-# Activation function (sigmoid in this case) and its derivative
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+# Activation function and its derivative
+def sigmoid(x, derivative=False):
+    t = 1 / (1 + np.exp(-x))
+    if derivative:
+        return t * (1 - t) #TODO: Agregar un
+    return t
 
-def sigmoid_derivative(x):
-    return sigmoid(x) * (1 - sigmoid(x))
-
-# Replace sigmoid with tanh
-def tanh(x):
-    return np.tanh(x)
-
-# Derivative of tanh
-def tanh_derivative(x):
-    return 1 - np.tanh(x) ** 2
+# Funciones de activación
+def tanh(x, derivative=False):
+    t = np.tanh(x)
+    if derivative:
+        return 1 - t**2
+    return t

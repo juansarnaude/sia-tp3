@@ -1,52 +1,64 @@
 import numpy as np
 
-from src.utils.functions import sigmoid, sigmoid_derivative, tanh, tanh_derivative
-
 from src.models.Layer import Layer
 
 class MultiLayerPerceptron:
-    def __init__(self, layer_sizes):
+    def __init__(self, layer_sizes, activation_function, learning_rate):
         self.layers = []
         for i in range(1, len(layer_sizes)):
-            self.layers.append(Layer(layer_sizes[i], layer_sizes[i-1]))
+            self.layers.append(Layer(layer_sizes[i-1], layer_sizes[i], activation_function))
+        self.learning_rate = learning_rate
 
-    def forward(self, X, bias=0):
-        # Forward pass through the layers
+    def forward(self, inputs):
         for layer in self.layers:
-            X = layer.forward(X, bias)
-        return X
+            inputs = layer.forward(inputs)
+        return inputs
+    
+    def backward(self, x, y, outputs):
+        # Calcular el error y el gradiente para la capa de salida
+        error = y - outputs[-1]
+        delta = error * self.layers[-1].activation_function(outputs[-1], derivative=True)
 
-    def backpropagate(self, X, y, learning_rate, bias=0):
-        # Forward pass to get outputs
-        outputs = [X]
-        for layer in self.layers:
-            X = layer.forward(X, bias)
-            outputs.append(X)
+        # Retropropagar el error a través de las capas
+        for i in reversed(range(len(self.layers))):
+            layer = self.layers[i]
+            inputs = outputs[i] if i > 0 else x
 
-        # Calculate delta for the output layers
-        deltas = [None] * len(self.layers)
-        last_output = outputs[-1]
-        deltas[-1] = (y - last_output) * tanh_derivative(self.layers[-1].last_outputs)
+            # Actualizar pesos y sesgos
+            for j, neuron in enumerate(layer.neurons):
+                neuron.weights += self.learning_rate * delta[j] * inputs
+                neuron.bias += self.learning_rate * delta[j]
 
-        # Backpropagate through layers
-        for l in reversed(range(len(self.layers) - 1)):
-            deltas[l] = (np.dot(deltas[l + 1], np.array(self.layers[l + 1].get_weights())) * tanh_derivative(self.layers[l].last_outputs))
+            # Calcular delta para la capa anterior
+            if i > 0:
+                delta = np.dot(delta, layer.get_weights()) * self.layers[i-1].activation_function(outputs[i], derivative=True)
 
-        # Update weights for each layer
-        for l, layer in enumerate(self.layers):
-            inputs = outputs[l]  # Inputs to the current layer
-            dW = learning_rate * np.outer(deltas[l], inputs)
-            layer.update_weights(dW)
-
-    def train(self, X_train, y_train, learning_rate, bias=0, epochs=100):
+    def train(self, X, y, epochs, epsilon):
         for epoch in range(epochs):
-            total_loss = 0
-            for X, y in zip(X_train, y_train):
-                self.backpropagate(X, y, learning_rate, bias)
-                total_loss += np.mean((self.forward(X) - y) ** 2)  # Mean Squared Error
-            if epoch % 100 == 0:
-                print(f"Epoch {epoch}: Loss = {total_loss / len(X_train)}")
+            total_error = 0
+            for x, target in zip(X, y):
+                outputs = [x]
+                # Forward pass
+                for layer in self.layers:
+                    outputs.append(layer.forward(outputs[-1]))
 
-    def predict(self, X):
-        return self.forward(X)
+                # Backward pass
+                self.backward(x, target, outputs)
+
+                # Calcular error
+                error = self.mse(target, outputs[-1])
+                total_error += error
+
+            print(f"Época {epoch + 1}/{epochs}, Error promedio: {total_error*0.5:.6f}")
+
+            if total_error*0.5 < epsilon:
+                print(f"Convergencia alcanzada en la época {epoch + 1}")
+                break
+
+    def predict(self, x):
+        return self.forward(x)
+
+    @staticmethod
+    def mse(y_true, y_pred):
+        return np.mean((y_true - y_pred) ** 2)
 

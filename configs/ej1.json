@@ -1,7 +1,7 @@
 {
-  "input_file": "./input/ej1/and.csv",
+  "input_file": "./input/ej1/or.csv",
   "output_file": "./output/ej1/output.csv",
-  "learning_rate": 0.1,
-  "periods": 100,
-  "epsilon": 0
+  "learning_rate": 0.01,
+  "periods": 10000,
+  "epsilon": 0.001
 }
