@@ -58,15 +58,14 @@ class MultiLayerPerceptron:
     # error: error between expected and result
     def backwards_propagation(self, outputs, expected_output):
         delta = (np.array(expected_output) - outputs[-1]) * self.layers[-1].get_theta_diff()
-        delta_w_list = [self.learning_rate * np.outer(delta, outputs[-2])]
+        delta_w_list = [np.outer(delta, outputs[-2]) * self.learning_rate]
 
         index = len(self.layers)-2
-
         while index > 0:
             list_w_next_layer = self.layers[index+1].get_w_list() # Is this list format correct
             delta = np.matmul(delta, list_w_next_layer)  * self.layers[index].get_theta_diff()
-            delta_w_list.append(self.learning_rate * np.outer(delta, outputs[index-1]))
-            index = index - 1
+            delta_w_list.append( np.outer(delta, outputs[index-1]) * self.learning_rate)
+            index -= 1
 
         return delta_w_list
         #print(delta_w_list)
@@ -79,4 +78,4 @@ class MultiLayerPerceptron:
             index -= 1
 
     def error(self, expected_value, computed_value):
-        return (expected_value - computed_value)**2
+        return (expected_value-computed_value)**2

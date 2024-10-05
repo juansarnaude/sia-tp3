@@ -1,3 +1,4 @@
+
 import numpy as np
 
 from src.perceptrons.PerceptronLinear import PerceptronLinear
@@ -13,7 +14,7 @@ class Layer:
 
         for i in range(perceptron_amount):
             # We initialize all the unused params in 0.
-            self.perceptron_list.append(PerceptronNonLinear(layer_input_size, learning_rate))
+            self.perceptron_list.append(PerceptronLinear(layer_input_size, learning_rate))
 
     def feed_forward(self, layer_input):
         layer_output = []
@@ -38,6 +39,9 @@ class Layer:
         return np.array(w_list)
 
     def update_w(self, delta_w_layer):
-        index = 0 # Capaz hay que iterar al revez
+        index = len(self.perceptron_list)-1 # Capaz hay que iterar al revez
         for delta_perceptron in delta_w_layer:
             self.perceptron_list[index].neuron.update_w(delta_perceptron)
+            print(delta_perceptron)
+            index-=1
+        print("------------------------------")

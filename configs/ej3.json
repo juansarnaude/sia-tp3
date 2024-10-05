@@ -1,9 +1,9 @@
 {
   "input_file": "./input/ej1/xor.csv",
   "output_file": "./output/ej3/output.csv",
-  "neurons_per_layer": [5,4,3,2,1],
-  "learning_rate": 0.01,
-  "periods": 100000,
+  "neurons_per_layer": [4,4,1],
+  "learning_rate": 0.001,
+  "periods": 10000,
   "epsilon": 0.00001,
   "beta":8
 }

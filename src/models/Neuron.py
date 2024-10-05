@@ -2,7 +2,7 @@ import numpy as np
 
 class Neuron:
     def __init__(self, w_amount):
-        self.w = np.zeros(w_amount)
+        self.w = (np.random.rand(w_amount))
         self.last_weighted_sum = 0
 
     def modify_w(self, w_values):
