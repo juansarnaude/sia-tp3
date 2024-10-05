@@ -1,0 +1,10 @@
+{
+  "input_file": "D:/ITBA/4-anio/SIA/sia-tp3/input/ej3/ej3.txt",
+  "output_file": "D:/ITBA/4-anio/SIA/sia-tp3/output/ej3/output.csv",
+  "layer_sizes": [35, 35, 30, 25, 20, 1],
+  "learning_rate": 0.01,
+  "activation_function":"tanh",
+  "epochs": 10000,
+  "epsilon": 0.00001,
+  "beta":8
+}
