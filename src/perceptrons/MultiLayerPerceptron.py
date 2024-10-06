@@ -50,7 +50,6 @@ class MultiLayerPerceptron:
                 total_error += error
 
             print(f"Época {epoch + 1}/{epochs}, Error promedio: {total_error*0.5:.6f}")
-
             if total_error*0.5 < epsilon:
                 print(f"Convergencia alcanzada en la época {epoch + 1}")
                 break

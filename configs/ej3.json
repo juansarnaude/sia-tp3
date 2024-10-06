@@ -1,7 +1,7 @@
 {
   "input_file": "./input/ej1/and.csv",
   "output_file": "./output/ej3/output.csv",
-  "layer_sizes": [2,2,2,1],
+  "layer_sizes": [35,25,10,10],
   "learning_rate": 0.01,
   "activation_function":"tanh",
   "epochs": 10000,
