@@ -55,8 +55,8 @@ class MultiLayerPerceptron:
                 error = self.mse(target, outputs[-1])
                 total_error += error
 
-            print(f"Época {epoch + 1}/{epochs}, Error promedio: {total_error*0.5:.6f}")
-            if total_error*0.5 < epsilon:
+            print(f"Época {epoch + 1}/{epochs}, Error: {total_error:.6f}")
+            if total_error < epsilon:
                 print(f"Convergencia alcanzada en la época {epoch + 1}")
                 break
 
@@ -65,5 +65,5 @@ class MultiLayerPerceptron:
 
     @staticmethod
     def mse(y_true, y_pred):
-        return np.mean((y_true - y_pred) ** 2)
+        return 0.5*np.mean((y_true - y_pred) ** 2)
 
