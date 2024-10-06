@@ -3,11 +3,11 @@ import numpy as np
 from src.models.Layer import Layer
 
 class MultiLayerPerceptron:
-    def __init__(self, layer_sizes, activation_function, learning_rate):
+    def __init__(self, layer_sizes, activation_function, optimizer):
         self.layers = []
         for i in range(1, len(layer_sizes)):
             self.layers.append(Layer(layer_sizes[i-1], layer_sizes[i], activation_function))
-        self.learning_rate = learning_rate
+        self.optimizer = optimizer
 
     def forward(self, inputs):
         for layer in self.layers:
@@ -25,9 +25,15 @@ class MultiLayerPerceptron:
             inputs = outputs[i] if i > 0 else x
 
             # Actualizar pesos y sesgos
-            for j, neuron in enumerate(layer.neurons):
-                neuron.weights += self.learning_rate * delta[j] * inputs
-                neuron.bias += self.learning_rate * delta[j]
+            
+            gradients = []
+            for j, neuron in enumerate(layer.neurons): # Calculate gradients
+                grad_w = delta[j] * inputs
+                grad_b = delta[j]
+                gradients.append((grad_w, grad_b))
+
+            # Use the optimizer to update the weights and biases
+            self.optimizer.update(layer=layer, gradients=gradients)
 
             # Calcular delta para la capa anterior
             if i > 0:

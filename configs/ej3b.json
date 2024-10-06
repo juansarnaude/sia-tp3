@@ -7,5 +7,14 @@
   "epochs": 5000,
   "epsilon": 0.01,
   "gaussian_noise":0,
-  "beta":1
+  "beta":1,
+  "optimizer": {
+    "method":"gradient_descent",
+    "momentum":0.9,
+    "adam": {
+      "beta_1":0.9,
+      "beta_2":0.999,
+      "epsilon":1e-8
+    }
+  }
 }

@@ -12,3 +12,6 @@ class Layer:
 
     def get_weights(self):
         return np.array([neuron.weights for neuron in self.neurons])
+    
+    def get_biases(self):
+        return np.array([neuron.bias for neuron in self.neurons])
