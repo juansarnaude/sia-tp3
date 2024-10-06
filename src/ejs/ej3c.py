@@ -9,7 +9,7 @@ from src.optimizer.Adam import Adam
 
 
 if __name__ == "__main__":
-    with open("./configs/ej3b.json") as file:
+    with open("./configs/ej3c.json") as file:
         config = json.load(file)
 
     df = pd.read_csv(config["input_file"], delimiter=' ', header=None)

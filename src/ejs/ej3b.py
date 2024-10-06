@@ -32,7 +32,7 @@ if __name__ == "__main__":
     else:
         raise ValueError("invalid activation function argument")
 
-# Optimizer configuration
+    # Optimizer configuration
     optimizer_config = config["optimizer"]
 
     optimizer_str = optimizer_config["method"]
