@@ -11,6 +11,8 @@ class Perceptron(ABC):
         self.w_amount = w_amount
         self.neuron = Neuron(self.w_amount)
         self.learning_rate = learning_rate
+        self.min_value_in_dataset = None
+        self.max_value_in_dataset = None
 
     def run(self, periods, epsilon, dataset):
         periods = periods
@@ -19,6 +21,16 @@ class Perceptron(ABC):
 
         current_period = 1
         current_error = 100
+
+        #Initialize the normalization
+        for data in dataset.values.tolist():
+            value = data.pop()
+            if not self.min_value_in_dataset:
+                self.min_value_in_dataset = value
+                self.max_value_in_dataset = value
+            self.min_value_in_dataset = min(self.min_value_in_dataset, value)
+            self.max_value_in_dataset = max(self.max_value_in_dataset, value)
+
 
         while current_period < periods and current_error > epsilon:
             expected_values = []
@@ -73,3 +85,9 @@ class Perceptron(ABC):
 
     def theta_diff(self, h):
         pass
+
+    def normalize(self, value):
+        if not 0 <= value <= 1:
+            raise ValueError(f"El valor {value} no es entre 0 y 1.")
+        return value
+        #return np.interp(value, [0, 1], [self.min_value_in_dataset, self.max_value_in_dataset])

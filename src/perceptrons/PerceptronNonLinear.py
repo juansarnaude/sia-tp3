@@ -25,7 +25,7 @@ class PerceptronNonLinear(Perceptron):
 
     def compute_activation(self, h):
         # return np.tanh(self.beta*h)
-        return 1/(1+np.exp(-2*self.beta*h))
+        return self.normalize(1/(1+np.exp(-2*self.beta*h)))
     
     def theta_diff(self, h):
         # return self.beta*(1-(self.compute_activation(h)**2))
