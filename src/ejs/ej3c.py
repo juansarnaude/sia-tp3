@@ -1,11 +1,11 @@
 import json
 import pandas as pd
 import numpy as np
-from src.utils.functions import sigmoid, tanh
+from src.utils.functions import sigmoid, tanh, gaussian_noise
 from src.perceptrons.MultiLayerPerceptron import MultiLayerPerceptron
 
 if __name__ == "__main__":
-    with open("E:/ITBA/Programacion/SIA/sia-tp3/configs/ej3b.json") as file:
+    with open("./configs/ej3b.json") as file:
         config = json.load(file)
 
     df = pd.read_csv(config["input_file"], delimiter=' ', header=None)
@@ -13,6 +13,7 @@ if __name__ == "__main__":
     df = df.iloc[:, :-1]
 
     matrix_list = [df.iloc[i:i + 7, :] for i in range(0, len(df), 7)]
+
     flattened_matrixes = [matrix.values.flatten() for matrix in matrix_list]
 
     learning_rate=config["learning_rate"]
@@ -59,7 +60,13 @@ if __name__ == "__main__":
 
     mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)
 
-    for input in inputs:
+    # Add noise to the matrix
+    standard_deviation = config["gaussian_noise"]
+    noisy_matrix_list = []
+    for matrix in matrix_list:
+        noisy_matrix_list.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
+        
+    for i, input in enumerate(noisy_matrix_list):
         prediction = mlp.predict(input)
-        print(f"Entrada: {input} \nPredicción: {prediction} \n ")
+        print(f"Entrada: {input}\nNúmero: {i}\nPredicción: {prediction} \n ")
         print("---------")

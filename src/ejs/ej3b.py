@@ -5,7 +5,7 @@ from src.utils.functions import sigmoid, tanh
 from src.perceptrons.MultiLayerPerceptron import MultiLayerPerceptron
 
 if __name__ == "__main__":
-    with open("D:/ITBA/4-anio/SIA/sia-tp3/configs/ej3b.json") as file:
+    with open("./configs/ej3b.json") as file:
         config = json.load(file)
 
     df = pd.read_csv(config["input_file"], delimiter=' ', header=None)
