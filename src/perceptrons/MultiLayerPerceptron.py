@@ -41,6 +41,7 @@ class MultiLayerPerceptron:
 
     def train(self, X, y, epochs, epsilon):
         for epoch in range(epochs):
+            print(f"epoch: {epoch}")
             total_error = 0
             for x, target in zip(X, y):
                 outputs = [x]
@@ -65,5 +66,9 @@ class MultiLayerPerceptron:
 
     @staticmethod
     def mse(y_true, y_pred):
-        return 0.5*np.mean((y_true - y_pred) ** 2)
+        return np.mean((y_true - y_pred) ** 2)
+    
+
+
+
 
