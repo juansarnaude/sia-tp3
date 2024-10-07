@@ -57,13 +57,16 @@ class Perceptron(ABC):
             print(expected_values)
             print(computed_values)
 
-            if self.error(np.array(computed_values), np.array(expected_values)) <= epsilon:
+            error = self.error(np.array(computed_values), np.array(expected_values))
+            print("Error: " + str(error))
+
+            if error <= epsilon:
                 print("Last Period WON")
                 return
             
             weights = self.neuron.weights
 
-            graph_hiperplane(weights[0], weights[1], self.bias)
+            #graph_hiperplane(weights[0], weights[1], self.bias)
 
             current_period += 1
 
@@ -92,7 +95,7 @@ class Perceptron(ABC):
         pass
 
     def normalize(self, value):
-        if not 0 <= value <= 1:
+        if not -1 <= value <= 1:
             raise ValueError(f"El valor {value} no es entre 0 y 1.")
-        return value
-        #return np.interp(value, [0, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
+        #return value
+        return np.interp(value, [-1, 1], [self.min_value_in_dataset, self.max_value_in_dataset])

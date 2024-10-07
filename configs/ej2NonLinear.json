@@ -1,8 +1,8 @@
 {
-  "input_file": "./input/ej2/ej2small.csv",
+  "input_file": "./input/ej2/ej2.csv",
   "output_file": "./output/ej2/output.csv",
   "learning_rate": 0.001,
-  "periods": 1000,
+  "periods": 10000,
   "epsilon": 0.00001,
   "beta":8
 }

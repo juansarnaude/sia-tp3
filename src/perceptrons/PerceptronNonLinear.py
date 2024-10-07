@@ -1,6 +1,8 @@
 import numpy as np
 
 from src.perceptrons.Perceptron import Perceptron
+from src.utils import functions
+
 
 class PerceptronNonLinear(Perceptron):
     def __init__(self, w_amount, learning_rate, beta=8):
@@ -24,9 +26,9 @@ class PerceptronNonLinear(Perceptron):
         return weighted_sum
 
     def compute_activation(self, h):
-        # return np.tanh(self.beta*h)
-        return self.normalize(1/(1+np.exp(-2*self.beta*h)))
+        # return np.tanh(self.beta*h
+        return self.normalize(functions.tanh(h))
     
     def theta_diff(self, h):
         # return self.beta*(1-(self.compute_activation(h)**2))
-        return 2*self.beta*self.compute_activation(h)*(1-self.compute_activation(h))
+        return functions.tanh(h,derivative=True)
