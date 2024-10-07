@@ -15,13 +15,16 @@ class Perceptron(ABC):
         self.min_value_in_dataset = None
         self.max_value_in_dataset = None
 
-    def run(self, periods, epsilon, dataset):
+    def run(self, periods, epsilon, dataset, out_file):
         periods = periods
         epsilon = epsilon
         dataset = dataset
 
         current_period = 1
         current_error = 100
+
+        with open(out_file, 'w') as f:
+            f.write(f"period,error\n")
 
         #Initialize the normalization
         for data in dataset.values.tolist():
@@ -52,13 +55,12 @@ class Perceptron(ABC):
                 expected_values.append(expected_value)
                 computed_values.append(computed_value)
 
-            print("Current Period: " + str(current_period))
-            # (neuron.get_w())
-            print(expected_values)
-            print(computed_values)
+
 
             error = self.error(np.array(computed_values), np.array(expected_values))
-            print("Error: " + str(error))
+
+            with open(out_file, 'a') as f:
+                f.write(f"{current_period},{error}\n")
 
             if error <= epsilon:
                 print("Last Period WON")
@@ -97,5 +99,4 @@ class Perceptron(ABC):
     def normalize(self, value):
         if not -1 <= value <= 1:
             raise ValueError(f"El valor {value} no es entre 0 y 1.")
-        #return value
-        return np.interp(value, [-1, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
+        pass

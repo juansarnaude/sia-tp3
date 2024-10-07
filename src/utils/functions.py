@@ -5,7 +5,7 @@ import numpy as np
 def sigmoid(x, derivative=False):
     t = 1 / (1 + np.exp(-x))
     if derivative:
-        return t * (1 - t) #TODO: Agregar un
+        return t * (1 - t)
     return t
 
 def tanh(x, derivative=False):

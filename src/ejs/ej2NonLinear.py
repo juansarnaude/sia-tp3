@@ -8,5 +8,5 @@ if __name__ == "__main__":
 
     df = pd.read_csv(config["input_file"])
 
-    perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["beta"])
-    perceptron.run(config["periods"], config["epsilon"], df)
+    perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["beta"], config["activation"])
+    perceptron.run(config["periods"], config["epsilon"], df, config["output_file"][:-4] + "_" + config["activation"] + ".csv")
