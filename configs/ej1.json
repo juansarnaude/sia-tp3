@@ -1,5 +1,5 @@
 {
-  "input_file": "./input/ej1/or.csv",
+  "input_file": "./input/ej1/and.csv",
   "output_file": "./output/ej1/output.csv",
   "learning_rate": 0.01,
   "periods": 10000,

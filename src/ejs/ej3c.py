@@ -43,7 +43,6 @@ if __name__ == "__main__":
     adam_config = optimizer_config["adam"]
     beta_1 = adam_config["beta_1"]
     beta_2 = adam_config["beta_2"]
-    adam_epsilon = adam_config["epsilon"]
 
     optimizer = None
     if optimizer_str == "gradient_descent":
@@ -51,7 +50,7 @@ if __name__ == "__main__":
     elif optimizer_str == "momentum":
         optimizer = Momentum(learning_rate, momentum)
     elif optimizer_str == "adam":
-        optimizer = Adam(learning_rate, beta_1, beta_2, adam_epsilon)
+        optimizer = Adam(learning_rate, beta_1, beta_2)
     else:
         raise ValueError("invalid optimizer method argument")
 

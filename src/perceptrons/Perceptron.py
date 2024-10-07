@@ -3,6 +3,7 @@ import random
 import numpy as np
 
 from src.models.Neuron import Neuron
+from src.plot.hiperplane import graph_hiperplane
 
 class Perceptron(ABC):
 
@@ -59,6 +60,10 @@ class Perceptron(ABC):
             if self.error(np.array(computed_values), np.array(expected_values)) <= epsilon:
                 print("Last Period WON")
                 return
+            
+            weights = self.neuron.weights
+
+            graph_hiperplane(weights[0], weights[1], self.bias)
 
             current_period += 1
 

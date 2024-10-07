@@ -1,5 +1,5 @@
 {
-  "input_file": "./input/ej2/ej2.csv",
+  "input_file": "./input/ej2/ej2small.csv",
   "output_file": "./output/ej2/output.csv",
   "learning_rate": 0.001,
   "periods": 1000,
