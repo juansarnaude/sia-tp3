@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from metrics import ABC
+from src.metrics.Metrics import Metrics
 
-class Recall(ABC):
+class Recall(Metrics):
 
     @classmethod
-    def get_metrics(cls,true_positive,true_negative,false_positive,false_negative):
+    def get_metric(cls,true_positive,true_negative,false_positive,false_negative):
         return (true_positive/(true_positive + false_negative))
