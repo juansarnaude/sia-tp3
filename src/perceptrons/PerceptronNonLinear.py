@@ -33,7 +33,6 @@ class PerceptronNonLinear(Perceptron):
 
     def compute_activation(self, h):
         # return np.tanh(self.beta*h
-        print(self.activation(h))
         return self.normalize(self.activation(h))
     
     def theta_diff(self, h):
@@ -41,7 +40,7 @@ class PerceptronNonLinear(Perceptron):
         return self.activation(h,derivative=True)
 
     def normalize(self, value):
-        if self.activation == "sigmoid":
+        if self.activation == functions.sigmoid:
             return np.interp(value, [0, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
         else:
             return np.interp(value, [-1, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
