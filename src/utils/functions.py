@@ -41,3 +41,9 @@ def gaussian_noise(matrix, mean=0, standard_deviation=0.1):
     matriz_con_ruido = np.clip(matriz_con_ruido, 0, 1)
     
     return matriz_con_ruido
+
+def index_of_max_value(float_list):
+    list = float_list.tolist()
+    if not list:
+        raise ValueError("The list is empty")
+    return list.index(max(list))

@@ -66,4 +66,3 @@ class MultiLayerPerceptron:
     @staticmethod
     def mse(y_true, y_pred):
         return 0.5*np.mean((y_true - y_pred) ** 2)
-

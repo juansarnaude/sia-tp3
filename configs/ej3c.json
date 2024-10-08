@@ -6,7 +6,7 @@
   "activation_function":"tanh",
   "epochs": 5000,
   "epsilon": 0.01,
-  "gaussian_noise":0,
+  "gaussian_noise":0.2,
   "beta":1,
   "optimizer": {
     "method":"gradient_descent",
