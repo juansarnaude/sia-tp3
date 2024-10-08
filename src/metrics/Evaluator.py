@@ -16,7 +16,7 @@ class Evaluator:
     def evaluate(self, perceptron, training_set, training_expected_values, testing_set, testing_expected_values, epochs: int):
         
         ### Training
-        perceptron.train(training_set, training_expected_values, epochs, self.epsilon)
+        perceptron.train(training_set,testing_set, training_expected_values, epochs, self.epsilon)
 
         ### Testing
         confusion_matrix = np.zeros((self.input_set_len, self.output_set_len))

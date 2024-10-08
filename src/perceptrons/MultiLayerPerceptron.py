@@ -1,6 +1,11 @@
 import numpy as np
 import csv
 from src.models.Layer import Layer
+from src.metrics.Accuracy import Accuracy
+from src.metrics.Precision import Precision
+from src.metrics.Recall import Recall
+from src.metrics.F1Score import F1Score
+from src.utils.functions import index_of_max_value
 
 class MultiLayerPerceptron:
     def __init__(self, layer_sizes, activation_function, optimizer, output_path):
@@ -43,7 +48,12 @@ class MultiLayerPerceptron:
     def train(self, X, test_inputs, y, epochs, epsilon):
         errors = []  # Lista para almacenar los errores por época
         test_errors = []  # Lista para almacenar los errores por epoca
-
+        accuracy = []
+        f1 = []
+        precision = []
+        recall = []
+        input_set_len = len(X)
+        output_set_len = len(y)
         for epoch in range(epochs):
             print(f"epoch: {epoch}")
             total_error = 0
@@ -76,8 +86,37 @@ class MultiLayerPerceptron:
             avg_test_error = total_test_error / len(test_inputs)  # Error promedio por época
             test_errors.append(avg_test_error)  # Agregar el error promedio a la lista
 
-            print(f"Época {epoch + 1}/{epochs}, Error: {avg_error:.6f}, Test Error: {avg_test_error:.6f}")
+            confusion_matrix = np.zeros((input_set_len, output_set_len))
 
+            for input, expected_value in zip(test_inputs, y):
+                prediction = index_of_max_value(self.predict(input))
+                confusion_matrix[expected_value][prediction] += 1
+                #print(confusion_matrix[expected_value][prediction])
+
+            # compute the confusion matrix results
+            true_positive=0
+            true_negative=0
+            false_positive=0
+            false_negative=0
+
+            for i in range(len(confusion_matrix)):
+                for j in range(len(confusion_matrix[i])):
+                    if i == j:
+                        true_positive += confusion_matrix[i][j]
+                    else:
+                        false_negative += confusion_matrix[i][j]
+                        true_negative += confusion_matrix[j][j]
+                        false_positive += confusion_matrix[j][i]
+
+            #print(confusion_matrix)
+
+            accuracy.append(Accuracy.get_metric(true_positive,true_negative,false_positive,false_negative))
+            f1.append(F1Score.get_metric(true_positive,true_negative,false_positive,false_negative))
+            precision.append(Precision.get_metric(true_positive,true_negative,false_positive,false_negative))
+            recall.append(Recall.get_metric(true_positive,true_negative,false_positive,false_negative))
+
+            print(f"Época {epoch + 1}/{epochs}, Error: {avg_error:.6f}, Test Error: {avg_test_error:.6f}")
+            #print(precision)
             if avg_error < epsilon:
                 print(f"Convergencia alcanzada en la época {epoch + 1}")
                 break
@@ -85,9 +124,9 @@ class MultiLayerPerceptron:
         # Guardar errores en un archivo CSV
         with open(self.output_path, mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(['Epoch', 'Error', 'Test Error'])  # Encabezados
+            writer.writerow(['Epoch', 'Error', 'Test Error', 'Accuracy', 'F1Score', 'Precision', 'Recall'])  # Encabezados
             for epoch in range(len(errors)):
-                writer.writerow([epoch + 1, errors[epoch], test_errors[epoch]])
+                writer.writerow([epoch + 1, errors[epoch], test_errors[epoch],accuracy[epoch],f1[epoch],precision[epoch],recall[epoch]])
 
     def predict(self, x):
         return self.forward(x)
