@@ -56,7 +56,6 @@ class Perceptron(ABC):
                 computed_values.append(computed_value)
 
 
-
             error = self.error(np.array(computed_values), np.array(expected_values))
 
             with open(out_file, 'a') as f:
@@ -64,6 +63,8 @@ class Perceptron(ABC):
 
             if error <= epsilon:
                 print("Last Period WON")
+                print(expected_values)
+                print(computed_values)
                 return
             
             weights = self.neuron.weights

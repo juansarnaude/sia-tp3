@@ -15,9 +15,9 @@ class PerceptronLinear(Perceptron):
 
     def error(self, computed, expected):
         error_acum = 0
-        for index in range(len(computed)-1):
+        for index in range(len(computed)):
             error_acum += (expected[index] - computed[index])**2
-        return 1/2 * error_acum                                                     # TODO check if its divided by 2 or by the len(computed[0])
+        return error_acum / len(computed)
 
     def theta(self,weighted_sum):
         return weighted_sum

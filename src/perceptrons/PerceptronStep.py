@@ -14,9 +14,9 @@ class PerceptronStep(Perceptron):
 
     def error(self, computed, expected):
         error_acum = 0
-        for index in range(len(computed)-1):
-            error_acum += abs(expected[index] - computed[index])
-        return error_acum
+        for index in range(len(computed)):
+            error_acum += (expected[index] - computed[index]) ** 2
+        return error_acum / len(computed)
 
     def theta(self,weighted_sum):
         if weighted_sum >= 0:
