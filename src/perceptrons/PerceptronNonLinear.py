@@ -33,11 +33,11 @@ class PerceptronNonLinear(Perceptron):
 
     def compute_activation(self, h):
         # return np.tanh(self.beta*h
-        return self.normalize(self.activation(h))
+        return self.normalize(self.activation(h,beta=self.beta))
     
     def theta_diff(self, h):
         # return self.beta*(1-(self.compute_activation(h)**2))
-        return self.activation(h,derivative=True)
+        return self.activation(h,derivative=True,beta=self.beta)
 
     def normalize(self, value):
         aux=np.concatenate((self.min_value_in_dataset,self.max_value_in_dataset))

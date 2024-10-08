@@ -2,16 +2,16 @@ import numpy as np
 
 # Activation functions and its derivative
 
-def sigmoid(x, derivative=False):
-    t = 1 / (1 + np.exp(-x))
+def sigmoid(x, derivative=False, beta=1):
+    t = 1 / (1 + np.exp(-2*beta*x))
     if derivative:
-        return t * (1 - t)
+        return 2 * beta * t * (1 - t)
     return t
 
-def tanh(x, derivative=False):
-    t = np.tanh(x)
+def tanh(x, derivative=False, beta=1):
+    t = np.tanh(beta*x)
     if derivative:
-        return 1 - t**2
+        return beta * (1 - t**2)
     return t
 
 # Gaussian noise function
