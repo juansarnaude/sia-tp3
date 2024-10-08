@@ -11,6 +11,8 @@ if __name__ == "__main__":
     with open("./configs/ej3b.json") as file:
         config = json.load(file)
 
+    output_path = config["output_file"]
+
     df = pd.read_csv(config["input_file"], delimiter=' ', header=None)
 
     df = df.iloc[:, :-1]
@@ -78,7 +80,8 @@ if __name__ == "__main__":
     mlp = MultiLayerPerceptron(
         layer_sizes=layer_sizes,
         activation_function=activation_funciton,
-        optimizer=optimizer
+        optimizer=optimizer,
+        output_path=output_path
     )
 
     mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)

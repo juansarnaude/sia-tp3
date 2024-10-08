@@ -1,10 +1,10 @@
 {
   "input_file": "./input/ej2/ej2.csv",
-  "output_file": "./output/ej2/output_nonlinear.csv",
+  "output_file": "./output/ej2/output_nonlinear_tanh.csv",
   "learning_rate": 0.0001,
   "periods": 10000,
-  "epsilon": 0.00001,
-  "beta":8,
+  "epsilon": 0.0001,
+  "beta":2,
   "activation": "tanh",
-  "k": 4
+  "k": 1
 }
