@@ -4,13 +4,22 @@ import numpy as np
 import random
 from src.perceptrons.PerceptronLinear import PerceptronLinear
 
+def normalize_to_range(data, new_min, new_max):
+    """Normalizes array to a new range given by [new_min - new_max]"""
+    min_val = min(data)
+    max_val = max(data)
+    aux = np.concatenate((min_val, max_val))
+    normalized_data = np.interp(data, aux, (new_min, new_max))
+    return normalized_data
+
 if __name__ == "__main__":
     with open("./configs/ej2.json") as file:
         config = json.load(file)
 
     df = pd.read_csv(config["input_file"])
 
-    perceptron = PerceptronLinear(len(df.iloc[0]) - 1, config["learning_rate"], )
+
+    perceptron = PerceptronLinear(len(df.iloc[0]) - 1, config["learning_rate"],config["epsilon"],config["output_file"] )
 
     k = config["k"]
     # list of inputs
@@ -19,14 +28,14 @@ if __name__ == "__main__":
     # list of expected values
     expected_values = np.array(df[['y']].values.tolist())
 
-    k_fold = int(len(inputs) / k)
+    expected_values = normalize_to_range(expected_values, -1, 1).tolist()
 
+    k_fold = int(len(inputs) / k)
 
 
     sectors_inputs = []
     sectors_expected_values = []
     for i in range(k):
-        print(i)
         aux = []
         aux2 = []
 
@@ -43,20 +52,19 @@ if __name__ == "__main__":
     for i in range(len(sectors_inputs)):
         testing_inputs = sectors_inputs[i]
         testing_expected_values = sectors_expected_values[i]
-        if(i == len(sectors_inputs) - 1):
-            training_inputs = sectors_inputs[:i]
-            training_expected_values = sectors_expected_values[:i]
+        if i == len(sectors_inputs) - 1:
+            training_inputs = np.concatenate(sectors_inputs[:i])
+            training_expected_values = np.concatenate(sectors_expected_values[:i])
+        elif i == 0:
+            training_inputs = np.concatenate(sectors_inputs[(i + 1):])
+            training_expected_values = np.concatenate(sectors_expected_values[(i + 1):])
         else:
-            training_inputs = sectors_inputs[:i] + sectors_inputs[(i+1):]
-            training_expected_values = sectors_expected_values[:i] + sectors_expected_values[(i+1):]
-        #print("testing_inputs",testing_inputs)
-        #print("testing_expected_values",testing_expected_values)
-        #print("training_inputs",training_inputs)
-        #print("training_expected_values",training_expected_values)
-        #llamar a evaluate
-        #appendear a un array de metrics
+            training_inputs = np.concatenate(sectors_inputs[:i] + sectors_inputs[(i + 1):])
+            training_expected_values = np.concatenate(sectors_expected_values[:i] + sectors_expected_values[(i + 1):])
+        perceptron.train_and_test(training_inputs, training_expected_values,testing_inputs,testing_expected_values, config["periods"],i)
 
 
 
-    perceptron.run(config["periods"], config["epsilon"], df, config["output_file"])
+
+
 

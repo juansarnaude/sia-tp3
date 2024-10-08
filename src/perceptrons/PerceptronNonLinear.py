@@ -5,7 +5,7 @@ from src.utils import functions
 
 
 class PerceptronNonLinear(Perceptron):
-    def __init__(self, w_amount, learning_rate, beta=8, activation="sigmoid"):
+    def __init__(self, w_amount, learning_rate,epsilon,out_file, beta=8, activation="sigmoid"):
         if activation == "sigmoid":
             self.activation = functions.sigmoid
         elif activation == "tanh":
@@ -13,7 +13,7 @@ class PerceptronNonLinear(Perceptron):
         else:
             raise ValueError(f"Not a valid activation function: {activation}.")
 
-        super().__init__(w_amount, learning_rate)
+        super().__init__(w_amount, learning_rate,epsilon,out_file)
         self.beta = beta
 
     def delta_w(self, neuron_computed, expected_value, data, neuron_weighted_sum):
@@ -40,7 +40,8 @@ class PerceptronNonLinear(Perceptron):
         return self.activation(h,derivative=True)
 
     def normalize(self, value):
+        aux=np.concatenate((self.min_value_in_dataset,self.max_value_in_dataset))
         if self.activation == functions.sigmoid:
-            return np.interp(value, [0, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
+            return np.interp(value, [0, 1], aux)
         else:
-            return np.interp(value, [-1, 1], [self.min_value_in_dataset, self.max_value_in_dataset])
+            return np.interp(value, [-1, 1], aux)

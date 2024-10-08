@@ -5,5 +5,6 @@
   "periods": 10000,
   "epsilon": 0.00001,
   "beta":8,
-  "activation": "tanh"
+  "activation": "tanh",
+  "k": 4
 }
