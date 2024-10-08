@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import numpy as np
-from src.utils.functions import sigmoid, tanh
+from src.utils.functions import sigmoid, tanh, gaussian_noise
 from src.perceptrons.MultiLayerPerceptron import MultiLayerPerceptron
 from src.optimizer.GradientDescent import GradientDescent
 from src.optimizer.Momentum import Momentum
@@ -77,6 +77,16 @@ if __name__ == "__main__":
         0
     ]
 
+    # Add noise to the matrix
+    standard_deviation = config["gaussian_noise"]
+    noisy_input = []
+    for matrix in matrix_list:
+        noisy_input.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
+
+    training_input = []
+    for matrix in matrix_list:
+        training_input.append(gaussian_noise(matrix=matrix, standard_deviation=0).values.flatten())
+
     mlp = MultiLayerPerceptron(
         layer_sizes=layer_sizes,
         activation_function=activation_funciton,
@@ -84,7 +94,7 @@ if __name__ == "__main__":
         output_path=output_path
     )
 
-    mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)
+    mlp.train(training_input, noisy_input, expected_values, epochs=epochs, epsilon=epsilon)
 
     for input in inputs:
         prediction = mlp.predict(input)

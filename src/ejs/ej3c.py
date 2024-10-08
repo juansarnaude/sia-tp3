@@ -16,6 +16,8 @@ if __name__ == "__main__":
 
     df = df.iloc[:, :-1]
 
+    output_path = config["output_file"]
+
     matrix_list = [df.iloc[i:i + 7, :] for i in range(0, len(df), 7)]
 
     flattened_matrixes = [matrix.values.flatten() for matrix in matrix_list]
@@ -75,23 +77,26 @@ if __name__ == "__main__":
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
   ]
 
+    # Add noise to the matrix
+    standard_deviation = config["gaussian_noise"]
+    noisy_input = []
+    for matrix in matrix_list:
+        noisy_input.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
+
+    training_input = []
+    for matrix in matrix_list:
+        training_input.append(gaussian_noise(matrix=matrix, standard_deviation=0).values.flatten())
+
     mlp = MultiLayerPerceptron(
         layer_sizes=layer_sizes,
         activation_function=activation_funciton,
-        optimizer=optimizer
+        optimizer=optimizer,
+        output_path=output_path
     )
 
-    print(f"shape of inputs: {type(inputs[0])}")
-
-    mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)
-
-    # Add noise to the matrix
-    standard_deviation = config["gaussian_noise"]
-    noisy_matrix_list = []
-    for matrix in matrix_list:
-        noisy_matrix_list.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
+    mlp.train(training_input, noisy_input, expected_values, epochs=epochs, epsilon=epsilon)
         
-    for i, input in enumerate(noisy_matrix_list):
+    for i, input in enumerate(noisy_input):
         prediction = mlp.predict(input)
         print(f"Entrada: {input}\nNúmero: {i}\nPredicción: {prediction} \n ")
         print("---------")
