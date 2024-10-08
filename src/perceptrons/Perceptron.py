@@ -84,7 +84,7 @@ class Perceptron(ABC):
 
             current_period += 1
 
-    def train(self, training_set,training_expected_values, periods,epsilon):
+    def train(self, training_set,training_expected_values, periods, epsilon):
         periods = periods
         epsilon = self.epsilon
         training_set = training_set
@@ -130,7 +130,7 @@ class Perceptron(ABC):
                 f.write(f"{current_period},{error[0]}\n")
 
             if error <= epsilon:
-                graph_hiperplane(weights[0], weights[1], self.bias)
+                #graph_hiperplane(weights[0], weights[1], self.bias)
                 print("Last Period WON")
                 print(expected_values)
                 print(computed_values)
@@ -138,7 +138,7 @@ class Perceptron(ABC):
 
             current_period += 1
 
-        graph_hiperplane(weights[0], weights[1], self.bias)
+        #graph_hiperplane(weights[0], weights[1], self.bias)
 
 
     def value_to_feed_forward(self, neuron_input):

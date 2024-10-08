@@ -22,16 +22,24 @@ if __name__ == "__main__":
     perceptron = PerceptronLinear(len(df.iloc[0]) - 1, config["learning_rate"],config["epsilon"],config["output_file"] )
 
     k = config["k"]
+
+
+
     # list of inputs
     inputs = np.array(df[['x1','x2','x3']].values.tolist())
 
     # list of expected values
     expected_values = np.array(df[['y']].values.tolist())
 
-    expected_values = normalize_to_range(expected_values, -1, 1).tolist()
-
     k_fold = int(len(inputs) / k)
 
+    if k == 1: # If k ==1 then
+        #perceptron.out_file = config["output_file"] + "b1"
+        #perceptron.beta = 1
+        perceptron.train(inputs, expected_values, config["periods"],config["epsilon"])
+        exit()
+
+    expected_values = normalize_to_range(expected_values, -1, 1).tolist()
 
     sectors_inputs = []
     sectors_expected_values = []

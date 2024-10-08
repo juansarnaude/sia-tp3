@@ -23,6 +23,7 @@ if __name__ == "__main__":
     perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"],config["epsilon"],config["output_file"] )
 
 
+
     k = config["k"]
     # list of inputs
     inputs = np.array(df[['x1','x2','x3']].values.tolist())
@@ -30,9 +31,18 @@ if __name__ == "__main__":
     # list of expected values
     expected_values = np.array(df[['y']].values.tolist())
 
+
+    if k == 1 and config["beta"] == -1:
+        for i in range(1,10):
+            perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["epsilon"],config["output_file"])
+            perceptron.beta = i/2
+            perceptron.out_file = config["output_file"][:-4] + "b" + str(perceptron.beta) + ".csv"
+            perceptron.train(inputs, expected_values, config["periods"],config["epsilon"])
+        exit()
+
+
     expected_values = normalize_to_range(expected_values, -1, 1).tolist()
     perceptron.train(inputs, expected_values,config["periods"],config["epsilon"])
-
 
     k_fold = int(len(inputs) / k)
 
