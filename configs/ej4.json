@@ -1,0 +1,16 @@
+{
+    "output_file": "./output/ej3/output.csv",
+    "layer_sizes": [784, 256, 128, 10],
+    "learning_rate": 0.01,
+    "activation_function":"tanh",
+    "epochs": 20,
+    "epsilon": 0.01,
+    "optimizer": {
+      "method":"gradient_descent",
+      "momentum":0.9,
+      "adam": {
+        "beta_1":0.9,
+        "beta_2":0.999
+      }
+    }
+  }
