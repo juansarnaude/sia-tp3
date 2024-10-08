@@ -14,7 +14,7 @@ def graph_hiperplane(w1, w2, b):
 
     # Crear los puntos de ejemplo para las dos clases
     X = np.array([[-1, 1], [-1, -1], [1, -1], [1, 1]])
-    y = np.array([0, 1, 1, 0])  # Etiquetas de clase (0 o 1)
+    y = np.array([1, 0, 1, 1])  # Etiquetas de clase (0 o 1)
 
     # Crear el trazo para la línea de decisión
     linea_decision = go.Scatter(

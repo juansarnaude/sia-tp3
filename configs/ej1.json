@@ -1,6 +1,6 @@
 {
-  "input_file": "./input/ej1/xor.csv",
-  "output_file": "./output/ej1/output_xor.csv",
+  "input_file": "./input/ej1/or.csv",
+  "output_file": "./output/ej1/output_or.csv",
   "learning_rate": 0.01,
   "periods": 1000,
   "epsilon": 0.001

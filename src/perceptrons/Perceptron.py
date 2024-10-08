@@ -16,6 +16,10 @@ class Perceptron(ABC):
         self.max_value_in_dataset = None
 
     def run(self, periods, epsilon, dataset, out_file):
+
+        weights = self.neuron.weights
+        graph_hiperplane(weights[0], weights[1], self.bias)
+
         periods = periods
         epsilon = epsilon
         dataset = dataset
@@ -57,21 +61,21 @@ class Perceptron(ABC):
 
 
             error = self.error(np.array(computed_values), np.array(expected_values))
+            weights = self.neuron.weights
 
             with open(out_file, 'a') as f:
                 f.write(f"{current_period},{error}\n")
 
             if error <= epsilon:
+                graph_hiperplane(weights[0], weights[1], self.bias)
                 print("Last Period WON")
                 print(expected_values)
                 print(computed_values)
                 return
-            
-            weights = self.neuron.weights
-
-            #graph_hiperplane(weights[0], weights[1], self.bias)
 
             current_period += 1
+
+        graph_hiperplane(weights[0], weights[1], self.bias)
 
 
     def value_to_feed_forward(self, neuron_input):
