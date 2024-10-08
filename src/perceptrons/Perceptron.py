@@ -32,8 +32,8 @@ class Perceptron(ABC):
         current_period = 1
         current_error = 100
 
-        with open(self.out_file, 'w') as f:
-            f.write(f"period,error\n")
+        with open(f"{self.out_file.replace('.csv', '')}{current_k}.csv", 'a') as f:
+            f.write(f"period,training_error,testing_error\n")
 
         # Initialize the normalization
         for value in training_expected_values:
@@ -69,8 +69,8 @@ class Perceptron(ABC):
 
             testing_error= self.error(testing_computed_values, testing_expected_values)
 
-            with open(f"{self.out_file}_{current_k}", 'a') as f:
-                f.write(f"{current_period},Training error: {error[0]},Testing error:{testing_error}\n")
+            with open(f"{self.out_file.replace('.csv', '')}{current_k}.csv", 'a') as f:
+                f.write(f"{current_period},{error[0]},{testing_error[0]}\n")
 
             if error <= epsilon:
                 print("Last Period WON")
