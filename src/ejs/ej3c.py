@@ -61,8 +61,6 @@ if __name__ == "__main__":
     # list of inputs
     inputs = flattened_matrixes
 
-    print(flattened_matrixes)
-
     # list of expected values
     expected_values = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -82,6 +80,8 @@ if __name__ == "__main__":
         activation_function=activation_funciton,
         optimizer=optimizer
     )
+
+    print(f"shape of inputs: {type(inputs[0])}")
 
     mlp.train(inputs, expected_values, epochs=epochs, epsilon=epsilon)
 
