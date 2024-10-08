@@ -191,6 +191,61 @@ Aqui un ejemplo de este archivo:
 * * `beta_1` y `beta_2` : betas utilizados en el metodo de optimizacion adam.
 
 
+### Ejercicio 4:
+
+Correr con el siguiente comando desde la carpeta raiz:
+
+```
+> python -m src.ejs.ej4
+```
+
+El archivo de configuracion se encuentra en `configs/ej4.json`
+
+Aqui un ejemplo de este archivo:
+
+```.json
+{
+    "output_file": "./output/ej3/output.csv",
+    "layer_sizes": [784, 256, 128, 10],
+    "learning_rate": 0.01,
+    "activation_function":"tanh",
+    "epochs": 20,
+    "epsilon": 0.01,
+    "optimizer": {
+      "method":"gradient_descent",
+      "momentum":0.9,
+      "adam": {
+        "beta_1":0.9,
+        "beta_2":0.999
+      }
+    }
+  }
+```
+
+`input_file`: Archivo de imput con las entradas de datos.
+
+`output_file`: Archivo de salida con ____ TODO COMPLETAR.
+
+`layer_sizes`: arreglo donde cada valor representa la cantidad de neuronas en cada capa. La primer capa debe coincidir con el tamaño del input (en este caso 784).
+
+`learning_rate`: tasa de aprendizaje.
+
+`activation_function`: 'tanh' o 'sigmoid'.
+
+`epochs`: limite de iteraciones para el algoritmo.
+
+`epsilon`: error aceptado sobre la muestra recibida.
+
+`optimizer`:
+
+* `method`: metodo de optimizacion elegido, puede ser 'gradient_descent', 'momentum' o 'adam'
+
+* `momentum`: en caso de elegir momentumm, es el valor de entrada de este metodo de optimizacion.
+
+* `adam`: 
+
+* * `beta_1` y `beta_2` : betas utilizados en el metodo de optimizacion adam.
+
 
 
 
