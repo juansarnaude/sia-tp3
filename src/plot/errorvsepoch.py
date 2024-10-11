@@ -18,6 +18,16 @@ with open("./configs/ej3c.json") as file:
     df = df.iloc[:, :-1]
 
     matrix_list = [df.iloc[i:i + 7, :] for i in range(0, len(df), 7)]
+    
+    # Configurar el diseño de la figura
+    fig.update_layout(
+        title='Evolución del error a lo Largo de las épocas con ruido gaussiano 0.5',
+        xaxis_title='Época',
+        yaxis_title='Error',
+        template='plotly_white',
+        font=dict(size=22),  # Cambiar el tamaño de la fuente general
+        title_font=dict(size=26)  # Cambiar el tamaño de la fuente del título
+    )
 
     flattened_matrixes = [matrix.values.flatten() for matrix in matrix_list]
 

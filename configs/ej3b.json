@@ -1,12 +1,12 @@
 {
   "input_file": "./input/ej3/ej3.txt",
-  "output_file": "./output/ej3/output.csv",
-  "layer_sizes": [35,10, 1],
+  "output_file": "./output/ej3b/error.csv",
+  "layer_sizes": [35,14,6,1],
   "learning_rate": 0.01,
   "activation_function":"tanh",
   "epochs": 5000,
-  "epsilon": 0.01,
-  "gaussian_noise":0,
+  "epsilon": 0.0001,
+  "gaussian_noise":0.5,
   "beta":1,
   "optimizer": {
     "method":"gradient_descent",

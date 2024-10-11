@@ -7,6 +7,8 @@ from src.optimizer.GradientDescent import GradientDescent
 from src.optimizer.Momentum import Momentum
 from src.optimizer.Adam import Adam
 
+np.random.seed(345678)  
+
 if __name__ == "__main__":
     with open("./configs/ej3b.json") as file:
         config = json.load(file)

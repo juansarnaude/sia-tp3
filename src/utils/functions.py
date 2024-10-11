@@ -40,8 +40,8 @@ def gaussian_noise(matrix, mean=0, standard_deviation=0.1):
     # Sumamos el ruido a la matriz original
     matriz_con_ruido = matriz_float + ruido
     
-    # Podemos forzar los valores a estar entre 0 y 1 si fuera necesario (opcional)
-    matriz_con_ruido = np.clip(matriz_con_ruido, 0, 1)
+    # # Podemos forzar los valores a estar entre 0 y 1 si fuera necesario (opcional)
+    # matriz_con_ruido = np.clip(matriz_con_ruido, 0, 1)
     
     return matriz_con_ruido
 
