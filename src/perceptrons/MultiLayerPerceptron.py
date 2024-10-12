@@ -52,8 +52,10 @@ class MultiLayerPerceptron:
         f1 = []
         precision = []
         recall = []
-        input_set_len = len(X)
-        output_set_len = len(y)
+        if type(y[0])==list:
+            output_set_len = len(y[0])
+        else: 
+            output_set_len = 2
         for epoch in range(epochs):
             print(f"epoch: {epoch}")
             total_error = 0
@@ -86,12 +88,12 @@ class MultiLayerPerceptron:
             avg_test_error = total_test_error / len(test_inputs)  # Error promedio por época
             test_errors.append(avg_test_error)  # Agregar el error promedio a la lista
 
-            confusion_matrix = np.zeros((input_set_len, output_set_len))
+            confusion_matrix = np.zeros((output_set_len, output_set_len))
 
             for input, expected_value in zip(test_inputs, y):
                 prediction = index_of_max_value(self.predict(input))
-                confusion_matrix[expected_value][prediction] += 1
-                #print(confusion_matrix[expected_value][prediction])
+                expected = index_of_max_value(expected_value)
+                confusion_matrix[expected][prediction] += 1
 
             # compute the confusion matrix results
             true_positive=0
@@ -108,7 +110,10 @@ class MultiLayerPerceptron:
                         true_negative += confusion_matrix[j][j]
                         false_positive += confusion_matrix[j][i]
 
-            #print(confusion_matrix)
+            print(f"false negative: {false_negative}")
+            print(f"false postivie: {false_positive}")
+            print(f"true positive {true_positive}")
+            print(f"true negative: {true_negative}")
 
             accuracy.append(Accuracy.get_metric(true_positive,true_negative,false_positive,false_negative))
             f1.append(F1Score.get_metric(true_positive,true_negative,false_positive,false_negative))
@@ -116,7 +121,7 @@ class MultiLayerPerceptron:
             recall.append(Recall.get_metric(true_positive,true_negative,false_positive,false_negative))
 
             print(f"Época {epoch + 1}/{epochs}, Error: {avg_error:.6f}, Test Error: {avg_test_error:.6f}")
-            #print(precision)
+            
             if avg_error < epsilon:
                 print(f"Convergencia alcanzada en la época {epoch + 1}")
                 break

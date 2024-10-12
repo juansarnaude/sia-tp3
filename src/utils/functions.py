@@ -86,8 +86,15 @@ def classify(output,expected_values):
 
     return true_positive,false_positive,true_negative,false_negative
 
-def index_of_max_value(float_list):
-    list = float_list.tolist()
-    if not list:
+def index_of_max_value(input):
+    if isinstance(input, int) or isinstance(input, float):
+        return 0 if input < 0.5 else 1
+    elif isinstance(input, np.ndarray):
+        input = input.tolist()
+
+    if len(input) == 1:
+        return 0 if input[0] < 0.5 else 1
+    if not input:
         raise ValueError("The list is empty")
-    return list.index(max(list))
+    
+    return input.index(max(input))

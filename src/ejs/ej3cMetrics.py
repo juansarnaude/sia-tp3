@@ -63,7 +63,8 @@ with open("./configs/ej3c.json") as file:
     mlp = MultiLayerPerceptron(
         layer_sizes=layer_sizes,
         activation_function=activation_funciton,
-        optimizer=optimizer
+        optimizer=optimizer,
+        output_path=config["output_file"]
     )
 
     training_expected_values = [
@@ -82,10 +83,9 @@ with open("./configs/ej3c.json") as file:
     testing_expected_values = [0,1,2,3,4,5,6,7,8,9]
 
     standard_deviation = config["gaussian_noise"]
+    print(standard_deviation)
     noisy_matrix_list = []
     for matrix in matrix_list:
         noisy_matrix_list.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
 
-    evaluator = Evaluator(10, 10, 0.00001, index_of_max_value)
-
-    accuracy, f1, precision, recall = evaluator.evaluate(mlp, inputs, training_expected_values, noisy_matrix_list, testing_expected_values, 10)
+    mlp.train(inputs, noisy_matrix_list, training_expected_values, epochs, epsilon)
