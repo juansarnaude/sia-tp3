@@ -99,26 +99,44 @@ with open("./configs/ej3c.json") as file:
 
     with open(output_path, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['epoch', 'accuracy', 'precision', 'recall', 'f1_score', 'test_accuracy', 'test_precision', 'test_recall', 'test_f1_score'])  # Encabezados
+        writer.writerow(['epoch', 'accuracy', 'precision', 'recall', 'f1_score','mse', 'test_accuracy', 'test_precision', 'test_recall', 'test_f1_score','test_mse'])  # Encabezados
         epochs_per_iteration = 1
         iterations = int(epochs/epochs_per_iteration)
         for i in range(iterations):
-            mlp.train(inputs, expected_values, epochs_per_iteration, epsilon)
+            if mlp.train(inputs, expected_values, epochs_per_iteration, epsilon):
+                break
 
             # Evaluate training set
 
             confusion_matrix  = np.zeros((10, 10))
             test_confusion_matrix  = np.zeros((10, 10))
 
+            total_train_error=0
+            total_test_error=0
+
             for train_input, test_input, expected_value in zip(inputs, test_inputs, expected_values):
-                prediction = index_of_max_value(mlp.predict(train_input))
-                test_prediction = index_of_max_value(mlp.predict(test_input))
                 expected = index_of_max_value(expected_value)
-                confusion_matrix[expected][prediction] += 1
-                test_confusion_matrix[expected][test_prediction] += 1
-            
+
+                #training_set
+                prediction=mlp.predict(train_input)
+                total_train_error +=mlp.mse(expected_value, prediction)
+                prediction_normalized = index_of_max_value(prediction)
+                confusion_matrix[expected][prediction_normalized] += 1
+
+                #testing_set
+                test_prediction=mlp.predict(test_input)
+                total_test_error+=mlp.mse(expected_value, test_prediction)
+                test_prediction_normalized = index_of_max_value(test_prediction)
+                test_confusion_matrix[expected][test_prediction_normalized] += 1
+
+            #training_set
+            train_error=total_train_error/len(train_input)
             train_metrics = confusion_metrics(confusion_matrix)
+
+            #testing_set
+            test_error=total_test_error/len(test_input)
             test_metrics = confusion_metrics(test_confusion_matrix)
-            writer.writerow([i*epochs_per_iteration, train_metrics["accuracy"], train_metrics["macro_precision"], train_metrics["macro_recall"], train_metrics["macro_f1_score"], test_metrics["accuracy"], test_metrics["macro_precision"], test_metrics["macro_recall"], test_metrics["macro_f1_score"]])
+
+            writer.writerow([i*epochs_per_iteration, train_metrics["accuracy"], train_metrics["macro_precision"], train_metrics["macro_recall"], train_metrics["macro_f1_score"],train_error, test_metrics["accuracy"], test_metrics["macro_precision"], test_metrics["macro_recall"], test_metrics["macro_f1_score"],test_error])
 
             

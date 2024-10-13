@@ -12,7 +12,7 @@ with open("./configs/ej3c.json") as file:
     df = pd.read_csv(output_path)
 
     # Step 2: Define the metrics to plot
-    metrics = ['accuracy', 'precision', 'recall', 'f1_score']
+    metrics = ['accuracy', 'precision', 'recall', 'f1_score','mse']
 
     # Step 3: Generate a plot for each metric comparing train vs test
     for metric in metrics:

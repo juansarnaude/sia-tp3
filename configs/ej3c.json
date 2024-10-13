@@ -4,7 +4,7 @@
   "layer_sizes": [35,10, 10],
   "learning_rate": 0.01,
   "activation_function":"tanh",
-  "epochs": 1,
+  "epochs": 1000,
   "epsilon": 0.01,
   "gaussian_noise":0.2,
   "beta":1,
