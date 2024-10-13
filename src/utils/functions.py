@@ -98,3 +98,50 @@ def index_of_max_value(input):
         raise ValueError("The list is empty")
     
     return input.index(max(input))
+
+# function for evaluating metrics based on a confusion matrix of any size
+# input should be a numpy confusion matrix
+def confusion_metrics(conf_matrix):
+    """
+    Toma una matriz de confusión multiclase y calcula TP, TN, FP, FN, 
+    junto con las métricas: accuracy, precision, recall y f1-score.
+    
+    Parámetros:
+    - conf_matrix: np.array, matriz de confusión multiclase (NxN).
+
+    Retorna:
+    - metrics: diccionario con accuracy, precision, recall y f1-score para cada clase.
+    """
+    num_classes = conf_matrix.shape[0]
+    
+    # Inicializamos arrays para las métricas de cada clase
+    TP = np.zeros(num_classes)
+    TN = np.zeros(num_classes)
+    FP = np.zeros(num_classes)
+    FN = np.zeros(num_classes)
+
+    # Calculamos TP, FP, FN y TN para cada clase
+    for i in range(num_classes):
+        TP[i] = conf_matrix[i, i]  # Verdaderos Positivos
+        FP[i] = conf_matrix[:, i].sum() - TP[i]  # Falsos Positivos
+        FN[i] = conf_matrix[i, :].sum() - TP[i]  # Falsos Negativos
+        TN[i] = conf_matrix.sum() - (TP[i] + FP[i] + FN[i])  # Verdaderos Negativos
+
+    # Cálculo de métricas para cada clase
+    accuracy = (TP + TN) / conf_matrix.sum()
+    precision = np.where(TP + FP > 0, TP / (TP + FP), 0)
+    recall = np.where(TP + FN > 0, TP / (TP + FN), 0)
+    f1_score = np.where(precision + recall > 0, 2 * (precision * recall) / (precision + recall), 0)
+
+    # Organizar resultados en un diccionario
+    metrics = {
+        "accuracy": accuracy.mean(),  # Promedio de accuracy por clase
+        "precision_per_class": precision,
+        "recall_per_class": recall,
+        "f1_score_per_class": f1_score,
+        "macro_precision": precision.mean(),
+        "macro_recall": recall.mean(),
+        "macro_f1_score": f1_score.mean(),
+    }
+
+    return metrics
