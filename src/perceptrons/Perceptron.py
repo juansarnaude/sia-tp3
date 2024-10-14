@@ -42,13 +42,20 @@ class Perceptron(ABC):
                 self.max_value_in_dataset = value
             self.min_value_in_dataset = min(self.min_value_in_dataset, value)
             self.max_value_in_dataset = max(self.max_value_in_dataset, value)
+        for value in testing_expected_values:
+            if not self.min_value_in_dataset:
+                self.min_value_in_dataset = value
+                self.max_value_in_dataset = value
+            self.min_value_in_dataset = min(self.min_value_in_dataset, value)
+            self.max_value_in_dataset = max(self.max_value_in_dataset, value)
+
 
         while current_period < periods and current_error > epsilon:
             expected_values = []
             computed_values = []
             training_expected_values = training_expected_values
 
-            for i, value in enumerate(training_set):  # TODO optimze this so it doesnt have to load data this way always
+            for i, value in enumerate(training_set):
                 expected_value = training_expected_values[i]
                 neuron_weighted_sum = self.neuron.get_weighted_sum(value, self.bias)
 
@@ -70,7 +77,7 @@ class Perceptron(ABC):
             testing_error= self.error(testing_computed_values, testing_expected_values)
 
             with open(f"{self.out_file.replace('.csv', '')}{current_k}.csv", 'a') as f:
-                f.write(f"{current_period},{error[0]},{testing_error[0]}\n")
+                f.write(f"{current_period},{error},{testing_error}\n")
 
             if error <= epsilon:
                 print("Last Period WON")
@@ -83,6 +90,10 @@ class Perceptron(ABC):
             # graph_hiperplane(weights[0], weights[1], self.bias)
 
             current_period += 1
+
+
+
+
 
     def train(self, training_set,training_expected_values, periods, epsilon):
         periods = periods
