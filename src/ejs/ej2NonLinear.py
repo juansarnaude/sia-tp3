@@ -36,6 +36,26 @@ if __name__ == "__main__":
             exit()
 
 
+
+    # SPLIT RATE
+    # input_train = []
+    # input_test = []
+    # expected_train = []
+    # expected_test = []
+    # for i in range(len(inputs)):
+    #     if i > 21:
+    #         input_train.append(inputs[i])
+    #         expected_train.append(expected_values[i][0])
+    #     else:
+    #         input_test.append(inputs[i])
+    #         expected_test.append(expected_values[i][0])
+    #
+    #
+    # perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["epsilon"],config["output_file"])
+    # perceptron.train_and_test(input_train, expected_train, input_test, expected_test, config["periods"], 1)
+    #
+    # exit(1)
+
     # Preparation of folds
     fold_size = int(len(inputs) / k)
     fold_inputs = []
@@ -68,3 +88,4 @@ if __name__ == "__main__":
 
 
         perceptron.train_and_test(fold_k_input, fold_k_input_expected, fold_inputs[i], fold_expected_values[i], config["periods"], i)
+        print(fold_expected_values[i])
