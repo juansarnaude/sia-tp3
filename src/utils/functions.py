@@ -15,7 +15,7 @@ def tanh(x, derivative=False, beta=1):
     t = np.tanh(beta*x)
     if derivative:
         return beta * (1 - t**2)
-    return t
+    return np.interp(t, [-1,1], [0,1])
 
 # Gaussian noise function
 
