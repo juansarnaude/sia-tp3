@@ -67,7 +67,7 @@ class MultiLayerPerceptron:
             
             if avg_error < epsilon:
                 print(f"Convergencia alcanzada en la época {epoch + 1}")
-                break
+                return True
 
     def predict(self, x):
         return self.forward(x)
