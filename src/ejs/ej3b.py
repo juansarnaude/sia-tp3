@@ -86,12 +86,57 @@ if __name__ == "__main__":
 
     #mlp.train(flattened_matrixes, expected_values, epochs=epochs, epsilon=epsilon)
 
-    if config["metrics"]:
-        with open(output_path, "w") as file:
-            file.write("epoch,accuracy,precision,recall,f1_score,mse\n")  # Encabezados
-            epochs_per_iteration = 1
-            iterations = int(epochs/epochs_per_iteration)
+    with open(output_path, "w") as file:
+        file.write("epoch,accuracy,precision,recall,f1_score,mse,test_accuracy,test_precision,test_recall,test_f1_score,test_mse\n")  # Encabezados
+        epochs_per_iteration = 1
+        iterations = int(epochs/epochs_per_iteration)
 
+        test_size = config["test"]
+        has_test = test_size > 0
+
+        if has_test:
+            train_inputs = inputs[:test_size]
+            test_inputs = inputs[test_size:]
+
+            train_expected_values = expected_values[:test_size]
+            test_expected_values = expected_values[test_size:]
+
+            for i in range(iterations):
+
+                if mlp.train(train_inputs, train_expected_values, epochs_per_iteration, epsilon):
+                    break
+
+                confusion_matrix = np.zeros((2, 2))
+                total_train_error = 0
+
+                test_confusion_matrix = np.zeros((2, 2))
+                test_total_error = 0
+
+                for train_input, expected_value in zip(train_inputs, train_expected_values):
+                    prediction = mlp.predict(train_input)
+                    total_train_error += mlp.mse(expected_value, prediction)
+                    prediction_normalized = index_of_max_value(prediction)
+                    confusion_matrix[expected_value][prediction_normalized] += 1
+
+                for test_input, test_expected_value in zip(test_inputs, test_expected_values):
+                    test_prediction = mlp.predict(test_input)
+                    test_total_error += mlp.mse(expected_value, test_prediction)
+                    test_prediction_normalized = index_of_max_value(test_prediction)
+                    test_confusion_matrix[test_expected_value][test_prediction_normalized] += 1
+
+                train_error = total_train_error / len(inputs)
+                train_metrics = confusion_metrics(confusion_matrix)
+
+                test_error = test_total_error / len(inputs)
+                test_metrics = confusion_metrics(test_confusion_matrix)
+
+                file.write(
+                    f'{epochs_per_iteration * i}, {train_metrics["accuracy"]}, {train_metrics["macro_precision"]}, {train_metrics["macro_recall"]}, {train_metrics["macro_f1_score"]},{train_error},'
+                    f'{test_metrics["accuracy"]}, {test_metrics["macro_precision"]}, {test_metrics["macro_recall"]}, {test_metrics["macro_f1_score"]},{test_error}\n')
+
+
+
+        else:
             for i in range(iterations):
 
                 if mlp.train(inputs, expected_values, epochs_per_iteration, epsilon):
