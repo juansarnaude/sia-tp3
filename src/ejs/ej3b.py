@@ -1,7 +1,8 @@
+import csv
 import json
 import pandas as pd
 import numpy as np
-from src.utils.functions import sigmoid, tanh, gaussian_noise
+from src.utils.functions import sigmoid, tanh, gaussian_noise, index_of_max_value, confusion_metrics
 from src.perceptrons.MultiLayerPerceptron import MultiLayerPerceptron
 from src.optimizer.GradientDescent import GradientDescent
 from src.optimizer.Momentum import Momentum
@@ -63,8 +64,6 @@ if __name__ == "__main__":
     # list of inputs
     inputs = flattened_matrixes
 
-    print(flattened_matrixes)
-
     # list of expected values
     expected_values = [
         1,
@@ -79,25 +78,77 @@ if __name__ == "__main__":
         0
     ]
 
-    # Add noise to the matrix
-    standard_deviation = config["gaussian_noise"]
-    noisy_input = []
-    for matrix in matrix_list:
-        noisy_input.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
-
-    training_input = []
-    for matrix in matrix_list:
-        training_input.append(gaussian_noise(matrix=matrix, standard_deviation=0).values.flatten())
-
     mlp = MultiLayerPerceptron(
         layer_sizes=layer_sizes,
         activation_function=activation_funciton,
-        optimizer=optimizer,
-        output_path=output_path
+        optimizer=optimizer
     )
 
-    mlp.train(training_input, noisy_input, expected_values, epochs=epochs, epsilon=epsilon)
+    #mlp.train(flattened_matrixes, expected_values, epochs=epochs, epsilon=epsilon)
 
-    for input in inputs:
-        prediction = mlp.predict(input)
-        print(f"Entrada: {input}, Predicción: {prediction[0]:.4f}")
+    if config["metrics"]:
+        with open(output_path, "w") as file:
+            writer = csv.writer(file)
+            writer.writerow(['epoch', 'accuracy', 'precision', 'recall', 'f1_score','mse'])  # Encabezados
+            epochs_per_iteration = 1
+            iterations = int(epochs/epochs_per_iteration)
+
+            for i in range(iterations):
+
+                if mlp.train(inputs, expected_values, epochs_per_iteration, epsilon):
+                    break
+
+                confusion_matrix  = np.zeros((2, 2))
+                total_train_error=0
+
+                for train_input, expected_value in zip(inputs, expected_values):
+
+                    prediction = mlp.predict(train_input)
+                    total_train_error += mlp.mse(expected_value, prediction)
+                    prediction_normalized = index_of_max_value(prediction)
+
+                    confusion_matrix[expected_value][prediction_normalized] += 1
+
+                train_error = total_train_error/len(inputs)
+                train_metrics = confusion_metrics(confusion_matrix)
+
+                writer.writerow([epochs_per_iteration * i, train_metrics["accuracy"], train_metrics["macro_precision"], train_metrics["macro_recall"], train_metrics["macro_f1_score"],train_error])
+
+
+
+
+
+
+    # COSAS A TESTEAR
+
+    '''
+    1) ARQUITECTURA
+    2) FUNCION DE ACTIVACION
+    3) METODO DE OPTIMIZACION
+    4) LEARNING RATE
+    '''
+
+
+
+    # Add noise to the matrix
+    # standard_deviation = config["gaussian_noise"]
+    # noisy_input = []
+    # for matrix in matrix_list:
+    #     noisy_input.append(gaussian_noise(matrix=matrix, standard_deviation=standard_deviation).values.flatten())
+    #
+    # training_input = []
+    # for matrix in matrix_list:
+    #     training_input.append(gaussian_noise(matrix=matrix, standard_deviation=0).values.flatten())
+    #
+    # mlp = MultiLayerPerceptron(
+    #     layer_sizes=layer_sizes,
+    #     activation_function=activation_funciton,
+    #     optimizer=optimizer,
+    #     output_path=output_path
+    # )
+    #
+    # mlp.train(training_input, noisy_input, expected_values, epochs=epochs, epsilon=epsilon)
+    #
+    # for input in inputs:
+    #     prediction = mlp.predict(input)
+    #     print(f"Entrada: {input}, Predicción: {prediction[0]:.4f}")
