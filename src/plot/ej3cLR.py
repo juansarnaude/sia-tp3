@@ -3,17 +3,17 @@ import plotly.graph_objects as go
 
 # Nombres de los archivos CSV (modifica estos nombres según tus archivos)
 archivos = [
-    "./output/ej3/output0-01.csv",
-    "./output/ej3/output0-02.csv",
-    "./output/ej3/output0-05.csv",
-    "./output/ej3/output0-07.csv",
     "./output/ej3/output0-1.csv",
+    "./output/ej3/output0-01.csv",
+    "./output/ej3/output0-001.csv",
+    "./output/ej3/output0-0001.csv",
+    "./output/ej3/output0-00001.csv",
 
 ]
 
 # Lista para almacenar los DataFrames y nombres de las arquitecturas
 dataframes = []
-nombres_modelos = ["Learning Rate=0.01","Learning Rate=0.03","Learning Rate=0.05", "Learning Rate=0.07","Learning Rate=0.1"]
+nombres_modelos = ["Learning Rate=0.1","Learning Rate=0.01","Learning Rate=0.001", "Learning Rate=0.0001","Learning Rate=0.00001"]
 
 # Lista de colores a usar para cada modelo
 colores = ['blue', 'orange', 'green', 'red', 'purple', 'brown']

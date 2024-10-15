@@ -7,11 +7,13 @@ archivos = [
     "./output/ej3/output1.csv",
     "./output/ej3/output2.csv",
     "./output/ej3/output3.csv",
+    "./output/ej3/output4.csv",
+    "./output/ej3/output5.csv",
 ]
 
 # Lista para almacenar los DataFrames y nombres de las arquitecturas
 dataframes = []
-nombres_modelos = ["Beta=0", "Beta=1", "Beta=2", "Beta=3"]
+nombres_modelos = ["Beta=0", "Beta=1", "Beta=2", "Beta=3","Beta=4","Beta=5"]
 
 # Lista de colores a usar para cada modelo
 colores = ['blue', 'orange', 'green', 'red', 'purple', 'brown']

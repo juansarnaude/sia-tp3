@@ -15,6 +15,9 @@ archivos = [
 dataframes = []
 nombres_modelos = ["Arq1=[35, 35, 15, 10]", "Arq2=[35, 15, 35, 10]", "Arq3=[35, 10, 10, 10]", "Arq4=[35, 10, 10]", "Arq5=[35, 25, 10]"]
 
+# Lista de colores a usar para cada modelo
+colores = ['blue', 'orange', 'green', 'red', 'purple', 'brown']
+
 # Leer cada archivo CSV y guardarlo con su nombre correspondiente
 for archivo, nombre in zip(archivos, nombres_modelos):
     df = pd.read_csv(archivo)
@@ -28,13 +31,27 @@ df_total = pd.concat(dataframes, ignore_index=True)
 fig = go.Figure()
 
 # Agregar una línea para cada modelo
-for nombre in nombres_modelos:
+for nombre, color in zip(nombres_modelos, colores):
     df_modelo = df_total[df_total["Modelo"] == nombre]
+
+    # Agregar la línea para el modelo con color específico
     fig.add_trace(go.Scatter(
         x=df_modelo["epoch"],
         y=df_modelo["f1_score"],
         mode='lines',
+        line=dict(color=color),
         name=nombre
+    ))
+
+    # Marcar el último valor con un punto del mismo color que la línea, mostrando la época
+    fig.add_trace(go.Scatter(
+        x=[df_modelo["epoch"].iloc[-1]],  # Última época
+        y=[df_modelo["f1_score"].iloc[-1]],  # Último f1_score
+        mode='markers+text',
+        marker=dict(size=10, color=color, symbol='circle'),  # Usar el mismo color
+        text=[df_modelo["epoch"].iloc[-1]],  # Mostrar el valor de la época
+        textposition="top center",  # Posicionar el texto encima del punto
+        showlegend=False
     ))
 
 # Configurar el layout del gráfico
