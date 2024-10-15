@@ -1,6 +1,6 @@
 {
   "input_file": "./input/ej3/ej3.txt",
-  "output_file": "./output/ej3/output0-00001.csv",
+  "output_file": "./output/ej3/adam.csv",
   "layer_sizes": [35,25, 10],
   "learning_rate": 0.01,
   "activation_function":"tanh",
@@ -9,7 +9,7 @@
   "gaussian_noise":0,
   "beta":4,
   "optimizer": {
-    "method":"gradient_descent",
+    "method":"adam",
     "momentum":0.9,
     "adam": {
       "beta_1":0.9,
