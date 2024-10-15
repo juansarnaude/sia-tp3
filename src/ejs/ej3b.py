@@ -8,7 +8,7 @@ from src.optimizer.GradientDescent import GradientDescent
 from src.optimizer.Momentum import Momentum
 from src.optimizer.Adam import Adam
 
-np.random.seed(345678)  
+#np.random.seed(345678)
 
 if __name__ == "__main__":
     with open("./configs/ej3b.json") as file:
@@ -88,8 +88,7 @@ if __name__ == "__main__":
 
     if config["metrics"]:
         with open(output_path, "w") as file:
-            writer = csv.writer(file)
-            writer.writerow(['epoch', 'accuracy', 'precision', 'recall', 'f1_score','mse'])  # Encabezados
+            file.write("epoch,accuracy,precision,recall,f1_score,mse\n")  # Encabezados
             epochs_per_iteration = 1
             iterations = int(epochs/epochs_per_iteration)
 
@@ -106,14 +105,14 @@ if __name__ == "__main__":
                     prediction = mlp.predict(train_input)
                     total_train_error += mlp.mse(expected_value, prediction)
                     prediction_normalized = index_of_max_value(prediction)
-
                     confusion_matrix[expected_value][prediction_normalized] += 1
+
+
 
                 train_error = total_train_error/len(inputs)
                 train_metrics = confusion_metrics(confusion_matrix)
 
-                writer.writerow([epochs_per_iteration * i, train_metrics["accuracy"], train_metrics["macro_precision"], train_metrics["macro_recall"], train_metrics["macro_f1_score"],train_error])
-
+                file.write(f'{epochs_per_iteration * i}, {train_metrics["accuracy"]}, {train_metrics["macro_precision"]}, {train_metrics["macro_recall"]}, {train_metrics["macro_f1_score"]},{train_error}\n')
 
 
 
