@@ -64,15 +64,15 @@ fig.update_layout(
     },
     xaxis={
         'title': {'text': "Época", 'font': {'size': 24}},  # Tamaño del título del eje X
-        'tickfont': {'size': 20}  # Tamaño de los números del eje X
+        'tickfont': {'size': 24}  # Tamaño de los números del eje X
     },
     yaxis={
         'title': {'text': "F1-Score", 'font': {'size': 24}},  # Tamaño del título del eje Y
-        'tickfont': {'size': 20}  # Tamaño de los números del eje Y
+        'tickfont': {'size': 24}  # Tamaño de los números del eje Y
     },
     legend={
         'title': {'text': "Modelos", 'font': {'size': 24}},  # Tamaño del título de la leyenda
-        'font': {'size': 20}  # Tamaño del texto de la leyenda
+        'font': {'size': 24}  # Tamaño del texto de la leyenda
     },
     template="plotly"
 )

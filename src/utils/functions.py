@@ -21,7 +21,7 @@ def tanh(x, derivative=False, beta=1, normalize=True):
 
 # Gaussian noise function
 
-def gaussian_noise(matrix, mean=0, standard_deviation=0.1):
+def gaussian_noise(matrix, mean=0, standard_deviation=0):
     """
     Aplica ruido gaussiano a una matriz de ceros y unos.
     

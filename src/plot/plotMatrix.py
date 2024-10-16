@@ -13,7 +13,7 @@ df = df.iloc[:, :-1]
 matrix_list = [df.iloc[i:i + 7, :] for i in range(0, len(df), 7)]
 
 # Seleccionar la matriz en la posición 3
-matrix3 = matrix_list[3]
+matrix3 = np.flipud(matrix_list[5])
 
 # Graficar la matriz
 fig = go.Figure(data=go.Heatmap(
@@ -45,13 +45,10 @@ fig.show()
 matriz_float = matrix3.astype(float)
 
 # Generamos ruido gaussiano con la misma forma que la matriz
-ruido = np.random.normal(loc=0, scale=0.2, size=matrix3.shape)
+ruido = np.random.normal(loc=0, scale=1.5, size=matrix3.shape)
 
 # Sumamos el ruido a la matriz original
 matrix3_noisy = matriz_float + ruido
-
-# # Podemos forzar los valores a estar entre 0 y 1 si fuera necesario (opcional)
-# matrix3_noisy = np.clip(matrix3_noisy, 0, 1)
 
 # Definir una escala de colores centrada en 0 (rojo-blanco-rojo)
 red_0_center = [

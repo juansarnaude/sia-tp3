@@ -1,6 +1,6 @@
 {
   "input_file": "./input/ej3/ej3.txt",
-  "output_file": "./output/ej3/adam.csv",
+  "output_file": "./output/ej3c/noise.csv",
   "layer_sizes": [35,25, 10],
   "learning_rate": 0.01,
   "activation_function":"tanh",
