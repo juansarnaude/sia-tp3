@@ -22,7 +22,8 @@ if __name__ == "__main__":
 
     if k == 1:
         if config["beta"] == -1:
-            for i in range(1,5):
+            betas = [0.1,0.25,0.5,1,2.5,5,10,25,50,100]
+            for i in betas:
                 perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["epsilon"],config["output_file"])
                 perceptron.beta = i
                 perceptron.out_file = config["output_file"][:-4] + "b" + str(perceptron.beta) + ".csv"
@@ -37,24 +38,30 @@ if __name__ == "__main__":
 
 
 
-    # SPLIT RATE
-    # input_train = []
-    # input_test = []
-    # expected_train = []
-    # expected_test = []
-    # for i in range(len(inputs)):
-    #     if i > 21:
-    #         input_train.append(inputs[i])
-    #         expected_train.append(expected_values[i][0])
-    #     else:
-    #         input_test.append(inputs[i])
-    #         expected_test.append(expected_values[i][0])
-    #
-    #
-    # perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["epsilon"],config["output_file"])
-    # perceptron.train_and_test(input_train, expected_train, input_test, expected_test, config["periods"], 1)
-    #
-    # exit(1)
+    if config["k"] == -1:
+        for j in range(10):
+            shuffled_df = df.sample(frac=1).reset_index(drop=True)
+            inputs = np.array(shuffled_df[['x1', 'x2', 'x3']].values.tolist())
+            expected_values = np.array(shuffled_df[['y']].values.tolist())
+
+            # SPLIT RATE
+            input_train = []
+            input_test = []
+            expected_train = []
+            expected_test = []
+
+            for i in range(len(expected_values)):
+                if i < config["split"]:
+                    input_train.append(inputs[i])
+                    expected_train.append(expected_values[i][0])
+                else:
+                    input_test.append(inputs[i])
+                    expected_test.append(expected_values[i][0])
+
+                perceptron = PerceptronNonLinear(len(df.iloc[0]) - 1, config["learning_rate"], config["epsilon"],config["output_file"]+str(j)+".csv")
+                perceptron.train_and_test(input_train, expected_train, input_test, expected_test, config["periods"], 1)
+
+            exit(1)
 
     # Preparation of folds
     fold_size = int(len(inputs) / k)

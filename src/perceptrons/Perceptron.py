@@ -122,7 +122,7 @@ class Perceptron(ABC):
 
             for i,value in enumerate(training_set): # TODO optimze this so it doesnt have to load data this way always
                 expected_value=training_expected_values[i]
-                neuron_weighted_sum = self.neuron.get_weighted_sum(value, self.bias)
+                neuron_weighted_sum = self.neuron.get_weighted_sum(value,self.bias)
 
                 computed_value=self.predict(value)
 

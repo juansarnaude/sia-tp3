@@ -46,7 +46,6 @@ class MultiLayerPerceptron:
 
     def train(self, X, y, epochs, epsilon):
         for epoch in range(epochs):
-            print(f"epoch: {epoch}")
             total_error = 0
             for x, target in zip(X, y):
                 outputs = [x]
